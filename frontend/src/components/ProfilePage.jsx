@@ -32,6 +32,7 @@ const ProfilePage = () => {
 
     const [incomingData, setIncomingData] = useState(null);
     const [isDisabled , setIsDisabled] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [formValues, setFormValues] = useState({
         fullName : "", 
         email : "", 
@@ -58,6 +59,7 @@ const ProfilePage = () => {
 
     async function getData()
     {
+        setLoading(true)
         try {
             let res = await axios.get(`${commonEndPoints}/getUserData`, {headers : headerInfo});
             // console.log("getData ", res.data.currentUser)
@@ -70,6 +72,7 @@ const ProfilePage = () => {
         } catch (error) {
             console.log("error fetching data ", error)
         }
+        setLoading(false)
     }
 
     function handleOpenModal()
@@ -172,7 +175,9 @@ const ProfilePage = () => {
     <>
     <NavBar />
     <AlertMessage />
-    <div className="max-w-6xl mx-auto mt-5 mb-2 p-3 border rounded-lg shadow-lg bg-white">
+    {
+        loading ? <div className='text-center font-semibold'>Loading...</div> :
+        <div className="max-w-6xl mx-auto mt-5 mb-2 p-3 border rounded-lg shadow-lg bg-white">
         <div className="flex items-center">
             <div className="w-1/4 flex justify-center relative">
 
@@ -235,7 +240,8 @@ const ProfilePage = () => {
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    }
 
     <div className='max-w-6xl mx-auto mt-2'>
         <h1 className='font-semibold text-orange-500'>Your Recent Applied Jobs</h1>
@@ -252,142 +258,142 @@ const ProfilePage = () => {
 
             <Modal.Body className="mx-3">
             <form className="space-y-4" onSubmit={(e)=> e.preventDefault()}>
-                    <div className=''>
-                        <label className="block">Full Name <span className='text-red-600 font-bold'> *</span></label>                        
+                <div className=''>
+                    <label className="block">Full Name <span className='text-red-600 font-bold'> *</span></label>                        
+                    <input 
+                        placeholder = "Tell Us your New Name ?"
+                        onChange={handleChange}
+                        type="text" 
+                        value={formValues.fullName}
+                        autoComplete='off'
+                        name='fullName'
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                    />
+                </div>
+                <div>
+                    <label className="block">Email <span className='text-red-600 font-bold'> *</span></label>
+                    <input 
+                        onChange={handleChange}
+                        type="text" 
+                        name='email'
+                        value={formValues.email}
+                        autoComplete='off'
+                        placeholder='Tell us your new Email Address'
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                    />
+                </div>
+                <div>
+                    <label className="block">Contact Number <span className='text-red-600 font-bold'> *</span></label>
+                    <input 
+                        onChange={handleChange}
+                        maxLength={10}
+                        type="text" 
+                        value={formValues.mobile}
+                        name='mobile'
+                        placeholder='+9100000000'
+                        autoComplete='off'
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                    />
+                </div>
+                <div>
+                    <label className="block">Your Bio <span className='text-red-600 font-bold'> *</span></label>
+                    <textarea  
+                        onChange={handleChange} rows="2" cols="5" 
+                        name='bio'
+                        value={formValues.bio}
+                        placeholder='A brief bio about yourself'
+                        className='w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2'
+                    >
+                    </textarea>
+                </div>
+                <div>
+                    <label className="block">Your Skills <span className='text-red-600 font-bold'> *</span></label>
+                    <input 
+                        onChange={handleChange}
+                        type="text" 
+                        name='skills'
+                        placeholder='Write your skills'
+                        autoComplete='off'
+                        value={formValues.skills}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                </div>
+                <div>
+                    <label className="block">Your Current or Permanent Location <span className='text-red-600 font-bold'> *</span></label>
+                    <input 
+                        onChange={handleChange}
+                        type="text" 
+                        name='address'
+                        placeholder='Enter Your Location'
+                        autoComplete='off'
+                        value={formValues.address}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                </div>
+                <div>
+                    <label className="block">Your Current Company 
+                        <span className="text-gray-500 text-sm"> (Leave empty if you are not working)</span>
+                    </label>
+                    <input 
+                        onChange={handleChange}
+                        type="text" 
+                        name='currentCompany'
+                        placeholder='Currently Working Somewhere ?'
+                        autoComplete='off'
+                        title="Leave empty if you are a fresher or currently not working"
+                        value={formValues.currentCompany}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                </div>
+                <div>
+                    <label className="block">Your Total Work Experience in (years) ? <span className='text-red-600 font-bold'> *</span></label>
+                    <input 
+                        onChange={handleChange}
+                        type="text" 
+                        name='totalExp'
+                        placeholder='Work Experience in (years)'
+                        autoComplete='off'
+                        value={formValues.totalExp}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                </div>
+                <div className='flex justify-between'>   
+                    <div>
+                        <label className="">Please Upload Updated Resume <span className='text-red-600 font-bold'> *</span></label>
                         <input 
-                            placeholder = "Tell Us your New Name ?"
-                            onChange={handleChange}
-                            type="text" 
-                            value={formValues.fullName}
-                            autoComplete='off'
-                            name='fullName'
-                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                            accept="application/pdf"
+                            type="file" 
+                            name='file'
+                            className="w-full px-2 py-2"
+                            onChange={handleFileChange}
                         />
-                    </div>
+                    </div>                     
                     <div>
-                        <label className="block">Email <span className='text-red-600 font-bold'> *</span></label>
+                        <label className="">Please Upload Profile Pic <span className='text-red-600 font-bold'> *</span></label>
                         <input 
-                            onChange={handleChange}
-                            type="text" 
-                            name='email'
-                            value={formValues.email}
-                            autoComplete='off'
-                            placeholder='Tell us your new Email Address'
-                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                            accept="image/png,image/jpeg"
+                            type="file" 
+                            name='profilePicture'
+                            className="w-full px-2 py-2"
+                            onChange={handleFileChange}
                         />
-                    </div>
-                    <div>
-                        <label className="block">Contact Number <span className='text-red-600 font-bold'> *</span></label>
-                        <input 
-                            onChange={handleChange}
-                            maxLength={10}
-                            type="text" 
-                            value={formValues.mobile}
-                            name='mobile'
-                            placeholder='+9100000000'
-                            autoComplete='off'
-                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
-                        />
-                    </div>
-                    <div>
-                        <label className="block">Your Bio <span className='text-red-600 font-bold'> *</span></label>
-                        <textarea  
-                            onChange={handleChange} rows="2" cols="5" 
-                            name='bio'
-                            value={formValues.bio}
-                            placeholder='A brief bio about yourself'
-                            className='w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2'
-                        >
-                        </textarea>
-                    </div>
-                    <div>
-                        <label className="block">Your Skills <span className='text-red-600 font-bold'> *</span></label>
-                        <input 
-                            onChange={handleChange}
-                            type="text" 
-                            name='skills'
-                            placeholder='Write your skills'
-                            autoComplete='off'
-                            value={formValues.skills}
-                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
-                    </div>
-                    <div>
-                        <label className="block">Your Current or Permanent Location <span className='text-red-600 font-bold'> *</span></label>
-                        <input 
-                            onChange={handleChange}
-                            type="text" 
-                            name='address'
-                            placeholder='Enter Your Location'
-                            autoComplete='off'
-                            value={formValues.address}
-                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
-                    </div>
-                    <div>
-                        <label className="block">Your Current Company 
-                            <span className="text-gray-500 text-sm"> (Leave empty if you are not working)</span>
-                        </label>
-                        <input 
-                            onChange={handleChange}
-                            type="text" 
-                            name='currentCompany'
-                            placeholder='Currently Working Somewhere ?'
-                            autoComplete='off'
-                            title="Leave empty if you are a fresher or currently not working"
-                            value={formValues.currentCompany}
-                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
-                    </div>
-                    <div>
-                        <label className="block">Your Total Work Experience in (years) ? <span className='text-red-600 font-bold'> *</span></label>
-                        <input 
-                            onChange={handleChange}
-                            type="text" 
-                            name='totalExp'
-                            placeholder='Work Experience in (years)'
-                            autoComplete='off'
-                            value={formValues.totalExp}
-                            className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
-                    </div>
-                    <div className='flex justify-between'>   
-                        <div>
-                            <label className="">Please Upload Updated Resume <span className='text-red-600 font-bold'> *</span></label>
-                            <input 
-                                accept="application/pdf"
-                                type="file" 
-                                name='file'
-                                className="w-full px-2 py-2"
-                                onChange={handleFileChange}
-                            />
-                        </div>                     
-                        <div>
-                            <label className="">Please Upload Profile Pic <span className='text-red-600 font-bold'> *</span></label>
-                            <input 
-                               accept="image/png,image/jpeg"
-                                type="file" 
-                                name='profilePicture'
-                                className="w-full px-2 py-2"
-                                onChange={handleFileChange}
-                            />
-                        </div>                       
-                    </div>
-                    <div className="text-center">
-                    {
-                        isDisabled ? 
+                    </div>                       
+                </div>
+                <div className="text-center">
+                {
+                    isDisabled ? 
+                    <button 
+                        disabled={isDisabled}
+                        className="bg-blue-500 cursor-not-allowed w-full text-white px-6 py-2 rounded-md"
+                    >
+                        Updating Your Profile
+                    </button> :
                         <button 
                             disabled={isDisabled}
-                            className="bg-blue-500 cursor-not-allowed w-full text-white px-6 py-2 rounded-md"
-                        >
-                            Updating Your Profile
-                        </button> :
-                            <button 
-                                disabled={isDisabled}
-                                onClick={handleSubmit}
-                                className="bg-blue-500  w-full text-white px-6 py-2 rounded-md"
-                        >
-                            Update
-                        </button> 
-                    }
-                    </div>
-                </form>
+                            onClick={handleSubmit}
+                            className="bg-blue-500  w-full text-white px-6 py-2 rounded-md"
+                    >
+                        Update
+                    </button> 
+                }
+                </div>
+            </form>
             </Modal.Body>
 
             <Modal.Footer>

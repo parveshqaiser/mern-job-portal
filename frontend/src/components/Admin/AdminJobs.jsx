@@ -20,8 +20,10 @@ const AdminJobs = () => {
     let {headerInfo , userDetails} = getAuthHeaders();
 
     useEffect(()=>{
-        getAdminJobs();
-        setIsLoading(false);
+        if(userDetails?.userId)
+        {
+            getAdminJobs();
+        }
     },[])
 
     useEffect(()=>{
@@ -37,23 +39,18 @@ const AdminJobs = () => {
 
     async function getAdminJobs()
     {
-        if(userDetails?.userId)
-        {
-            try {
-                setIsLoading(true)
-               
-                let res = await axios.get(`${commonEndPoints}/getAdminJobs`,{headers:headerInfo});
-                if(res?.data?.success)
-                {
-                    setTableData(res.data?.getJobByUserId);
-                    setFilterData(res.data?.getJobByUserId);
-                    setIsLoading(false);
-                }
-            } catch (error) {
-                console.log("error fetching c details", error);
-                setIsLoading(false)
+        setIsLoading(true)
+        try {
+            let res = await axios.get(`${commonEndPoints}/getAdminJobs`,{headers:headerInfo});
+            if(res?.data?.success)
+            {
+                setTableData(res.data?.getJobByUserId);
+                setFilterData(res.data?.getJobByUserId);
             }
+        } catch (error) {
+            console.log("error fetching c details", error);
         }
+        setIsLoading(false);        
     }
 
     return (
@@ -96,7 +93,7 @@ const AdminJobs = () => {
                 {
                      isLoading ? (
                         <tr>
-                            <td colSpan="5" className=' font-semibold italic text-center'>Loading....</td>
+                            <td colSpan="8" className=' font-semibold text-center'>Loading....</td>
                         </tr>
                     ) :filterData && filterData.length ? filterData.map((val, index)=>(
                         <tr className='' key={index}>

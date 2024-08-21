@@ -15,7 +15,7 @@ const LatestJobOpenings = () => {
                 {
                     jobs && jobs.length ? 
                     (jobs?.slice(0,6)?.map(val => <LatestJobCards val={val} key={val?._id}/>)) : 
-                    (<div className='flex items-center justify-center'>No Jobs Available</div>)
+                    (<div className='flex items-center justify-center ml-10 text-red-500'>No Jobs Available</div>)
                 }
                 {/* // {data.map(val=> <LatestJobCards />)} */}
             </div>

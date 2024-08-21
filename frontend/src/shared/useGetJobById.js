@@ -19,19 +19,19 @@ const useGetJobById = (id) => {
     
     async function getJob()
     {
-        try {
-            setIsLoading(true)
+        setIsLoading(true)
+        try {            
             let res = await axios.get(`${commonEndPoints}/getJobById/${id}`, {headers :headerInfo });
             // console.log("res ", res);       
             if(res.data?.success)
             {
                 dispatch(storeSingleJob(res?.data?.getJob[0]));
-                setIsLoading(false)
             }
         } catch (error) {
             console.log("error getting job", error);
             setIsLoading(false)
         }
+        setIsLoading(false)
     }
 
     return isLoading;

@@ -4,11 +4,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import {Menu} from "@headlessui/react";
 import axios from 'axios';
-import { logout } from '../utils/api';
 import { toast } from 'react-toastify';
 import { storeUserData } from '../shared/authSlice'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faArrowRightFromBracket ,faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons'
+import { commonEndPoints } from '../utils/api';
 
 
 const NavBar = () => {
@@ -28,7 +28,7 @@ const NavBar = () => {
     async function handleLogout()
     {
         try {
-            let res = await axios.get(`${logout}`);
+            let res = await axios.get(`${commonEndPoints}/logout`);
             if(res.data.success)
             {
                 toast.success("Logging out. Please wait..");
