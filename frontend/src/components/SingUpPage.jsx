@@ -56,7 +56,8 @@ const SingUpPage = () => {
         let {name, value} = e.target;
         let sanitize = removeDomElementsFromInput(value);
         value = sanitize;
-        let emailExp = new RegExp("^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z.-]*[a-zA-Z]$");    
+        // let emailExp = new RegExp("^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z.-]*[a-zA-Z]$");    
+        let emailExp = new RegExp(/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/);
 
         let newValues = {...formValues};
       
@@ -114,9 +115,8 @@ const SingUpPage = () => {
     {
         console.log(formValues);
         let {fullName, email,mobile,password,role,file} = formValues;
-        let emailExp = new RegExp("^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z.-]*[a-zA-Z]$");
-        let phoneExp = new RegExp("^[6-9]\\d{9}$");   
-
+        let phoneExp = new RegExp("^[6-9]\\d{9}$");  
+        let emailExp = new RegExp(/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/);
 
         if(!fullName.value){
             setFormValues({...formValues, fullName : {...formValues.fullName , error : "Required"}})
