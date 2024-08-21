@@ -1,0 +1,199 @@
+
+
+export const getApplicants = async (req,res)=>{
+    try {
+        let jobId = req.params.id;
+
+        let keyword = req.query.keyword || "";
+
+        console.log("jobId ", jobId);
+
+        let query = [
+            {
+                $match: {$or: [{ jobId: { $regex: keyword, $options: "i" } }]}
+            },
+            {
+                $lookup: {
+                    from: "applications", // Name of the collection to join with
+                    localField: "jobId", // Field from the jobs collection
+                    foreignField: "applicant", // Field from the companies collection
+                    as: "jobDetails" // New field to include the matched documents
+                }
+            },
+            {
+                $unwind: {path: "$jobDetails",preserveNullAndEmptyArrays: true}
+            },
+            {
+                $lookup: {
+                    from: "applications", // Name of the users collection
+                    localField: "applications.applicant", // Field from the applications collection
+                    foreignField: "userId", // Field from the users collection
+                    as: "userRegistrationDetails" // New field to include the user details
+                }
+            },
+            {
+                $unwind: {
+                    path: "$userRegistrationDetails",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $sort: { createdAt: -1 }
+            }
+        ];
+
+        let findApplicants = await jobDetails.aggregate(query);
+
+        // let findApplicants = await jobDetails.find({jobId}).populate({
+        //         path: 'application',
+        //         populate: {
+        //             path: 'applicant',
+        //             model: 'registers'
+        //         },
+        //         options: { sort: { createdAt: -1 } }
+        //     });
+
+        console.log("findApplicants ", findApplicants);
+
+        if(!findApplicants){
+            return res.json({message : "No Applicants found for this job",success : false});
+        }
+
+        return res.status(200).json({data:findApplicants, success:true});
+
+    } catch (error) {
+        console.log("error in getting all applicants details");
+    }
+};
+
+  let query = [
+            {
+                $match: { jobId: jobId }  // Step 1: Match the job by jobId
+            },
+            {
+                $unwind : "application",
+            },
+            {
+                $lookup: {
+                    from: "applications",  // The name of the applications collection
+                    localField: "application",  // The application IDs stored in the jobDetails schema
+                    foreignField: "applicant",  // The corresponding field in the applications collection
+                    as: "applicationDetails"  // The field name for the joined data in the output
+                }
+            },
+            {
+                $unwind: "$applicationDetails"  // Step 4: Unwind the applicationDetails array
+            },
+            {
+                $lookup: {  // Step 5: Look up corresponding user details (applicant)
+                    from: "registers",  // Name of the user registration collection
+                    localField: "applicationDetails.applicant",  // Field in applicationDetails (applicant ID)
+                    foreignField: "userId",  // Field in registers (use your custom user ID field)
+                    as: "applicantDetails"  // Output field
+                }
+            },
+            {
+                $unwind: "$applicantDetails"  // Step 6: Unwind the applicantDetails array
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    jobId: { $first: "$jobId" },
+                    title: { $first: "$title" },
+                    applicationDetails: { $push: "$applicationDetails" },
+                    applicants: { $push: "$applicantDetails" }
+                }
+            }
+        ];
+
+          let query = [
+                {
+                    $match: { jobId: jobId }  // Step 1: Match the job by jobId
+                },
+                {
+                    $lookup: {  // Step 2: Look up corresponding application details
+                        from: "applications",  // The name of the applications collection
+                        localField: "jobId",  // The jobId field in the jobs collection
+                        foreignField: "job",  // The job field in the applications collection
+                        as: "applicationDetails"  // The field name for the joined data in the output
+                    }
+                },
+                {
+                    $unwind: "$applicationDetails"  // Step 3: Unwind the applicationDetails array
+                },
+                {
+                    $addFields: {  // Step 4: Add the application field to the document
+                        applicationArray: "$application"  // Make the application array available for matching
+                    }
+                },
+                {
+                    $match: {  // Step 5: Filter to only include applications that match the user IDs in the applications array
+                        "applicationDetails.applicant": { $in: "$applicationArray" }
+                    }
+                }
+            ];
+
+
+  let query = [
+            {
+                $match : {
+                    jobId : jobId,
+                }
+            },
+            {
+                $lookup : {
+                    from : "applications",
+                    localField : "applicant",
+                    foreignField : "_id",
+                    as : "applicantDetails",
+                }
+            },
+            {
+                $unwind: "$applicantDetails"
+            },
+            {
+                $lookup: {
+                    from: "registers", // collection name where user registrations are stored
+                    localField: "applicantDetails.application",
+                    foreignField: "userId", // or your custom user ID field
+                    as: "applicantDetails"
+                }
+            },
+            {
+                $unwind: "$applicantDetails"
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    jobId: { $first: "$jobId" },
+                    title: { $first: "$title" },
+                    applicationDetails: { $push: "$applicationDetails" },
+                    applicants: { $push: "$applicantDetails" }
+                }
+            }
+        ];
+
+
+idk
+
+    // let getAllApplications = await applicationDetails.aggregate(query); 
+
+let query = [
+            {
+                $match: {$or: [{ job: { $regex: keyword, $options: "i" } }]}
+            },
+            {
+                $lookup: {
+                    from: "jobs", // Name of the collection to join with
+                    localField: "job", // Field from the jobs collection
+                    foreignField: "jobId", // Field from the companies collection
+                    as: "jobDetails" // New field to include the matched documents
+                }
+            },
+            {
+                $unwind: {path: "$jobDetails",preserveNullAndEmptyArrays: true}
+            },
+            {
+                $sort: { createdAt: -1 }
+            }
+        ];
