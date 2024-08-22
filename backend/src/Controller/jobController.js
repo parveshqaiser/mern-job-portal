@@ -56,14 +56,18 @@ export const getAllJobs = async(req, res)=>{
        
         let keywords = keyword.split(" ");
 
-        let regexQueries = keywords.map(k => ({
-            $or: [
-                { title: { $regex: k, $options: "i" } },
-                { description: { $regex: k, $options: "i" } },
-                { location: { $regex: k, $options: "i" } },
-                { salary: { $regex: k, $options: "i" } }
-            ]
-        }));
+        let regexQueries = keywords.map(k => {
+
+            let ignoreSpace =  k.replace(/\s+/g, ''); 
+            return {
+                $or: [
+                    { title: { $regex: ignoreSpace, $options: "i" } },
+                    { description: { $regex: ignoreSpace, $options: "i" } },
+                    { location: { $regex: ignoreSpace, $options: "i" } },
+                    { salary: { $regex: ignoreSpace, $options: "i" } }
+                ]
+            };
+        });
 
         let query = [
             {

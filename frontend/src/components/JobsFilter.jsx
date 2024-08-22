@@ -13,7 +13,7 @@ const JobsFilter = () => {
         {
             "number" : "2",
             "domain" :"Title",
-            "values" : ["React Developer", "MERN Developer", "Next JS Dev", "Vue JS", "JavaScript" , "Java" ,"HR", "Support"]
+            "values" : ["React Developer", "MERN Developer", "Next JS Dev", "Vue JS", "JavaScript" , "Java","Marketing", "Sales", "HR", "Support"]
         },
         {
             "number" : "3",

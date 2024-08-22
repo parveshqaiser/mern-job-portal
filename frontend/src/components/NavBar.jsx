@@ -72,7 +72,7 @@ const NavBar = () => {
                             <Link className='hover:text-purple-600' to="/admin/jobs">Jobs</Link>
                         </li>
                     </>
-                    ) : (
+                    ) : userDetails?.userId &&(
                     <>
                         <li>
                             <Link className='hover:text-orange-700' to="/home">Home</Link>

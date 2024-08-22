@@ -16,7 +16,7 @@ const Browse = () => {
     let dispatch = useDispatch();
     let {userDetails} = getAuthHeaders();
 
-    useGetAllJobs();
+    let{loading} = useGetAllJobs();
     let jobs = useSelector(store => store?.job?.allJobs);
     let query = useSelector(store=> store?.job?.searchQuery);
     let navigate = useNavigate();
@@ -38,17 +38,18 @@ const Browse = () => {
         dispatch(storeSearchQuery(""));
        }
     },[])
-   
+
     return (
     <>
         <NavBar />
         <AlertMessage />
         <div className='max-w-7xl mx-auto mt-10 '>
-            <h1 className='text-xl font-semibold'>Search Results [{jobs && jobs.length}]</h1>
+            <h1 className='text-xl font-semibold'>{!loading && <span>Search Result [{jobs && jobs.length}]</span>}</h1>
+            
             <p className='text-black underline cursor-pointer' onClick={()=> navigate("/home")}> Go Back</p>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-3 mt-4'>
             {
-                jobs && jobs.length ? jobs.map((val) => <JobsList val={val} key={val?._id} />) 
+                loading ? <div className='text-center mr-10 font-semibold'>Loading...</div> : jobs && jobs.length ? jobs.map((val) => <JobsList val={val} key={val?._id} />) 
                 : myQuery.length ?(
                     <div className='text-center text-red-500 text-lg'>" {myQuery} ", No Such Jobs Found</div>
                 ) 
