@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from '../NavBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faEyeSlash, faUserPen } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom'
 import { getAuthHeaders } from '../../shared/authorization'
 import axios from 'axios'
@@ -76,7 +76,8 @@ const AdminJobs = () => {
                 </div>
             </div>
 
-            <table className='table mt-5'>
+            <div className='overflow-x-auto'>
+                <table className='table mt-5 min-w-full'>
                 <thead>
                     <tr>
                         <th>S.No</th>
@@ -104,18 +105,24 @@ const AdminJobs = () => {
                             <td>{val?.openings}</td>
                             <td>{val.location}</td>
                             <td>{val.createdAt.split("T")[0]}</td>
-                            <td>
+                            <td className='flex space-x-2'>
                                 <FontAwesomeIcon  
                                     onClick={()=> navigate(`/admin/jobs/${val?.jobId}/applicants`)}
                                     icon={faEyeSlash} 
                                     title='View Applicants'  
-                                    className='cursor-pointer text-purple-500 w-6 h-6' 
+                                    className='cursor-pointer text-purple-500 w-6 h-6 mx-2' 
                                 />
+                                <FontAwesomeIcon
+                                    onClick={()=> navigate(`/admin/jobs/update/${val?.jobId}`)}
+                                    icon={faUserPen}
+                                    className='cursor-pointer text-green-500 w-5 h-5 mx-2' 
+                                    title='Edit Job' 
+                                 />
                             </td>
                         </tr>    
                     )) : searchText.length ? (
                         <tr>
-                            <td colSpan="8" className='text-center' >
+                            <td colSpan="8" className='text-center sm:text-center' >
                             <span className='text-red-500 font-semibold'> "{searchText}", No Job Found.</span>
                             </td>
                         </tr>
@@ -128,7 +135,9 @@ const AdminJobs = () => {
                     )
                 }              
                 </tbody>
-            </table>
+                </table>
+            </div>
+           
         </div>        
         </>
     )

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import {useSelector } from 'react-redux'
 import useGetAllCompanies from "../../shared/useGetALlCompanies";
 import { AlertMessage } from '../../utils/toastify'
+import { defaultImageLogo } from '../../utils/constants'
  
 const AdminCompanies = () => {
 
@@ -73,7 +74,7 @@ const AdminCompanies = () => {
                             <td className='w-25 h-25'>
                                 <img 
                                     className='w-20 rounded-md'
-                                    src={val.logo || "https://www.mintformations.co.uk/blog/wp-content/uploads/2020/05/shutterstock_583717939.jpg"} 
+                                    src={val.logo || defaultImageLogo} 
                                 />
                             </td>
                             <td>{val.companyName}</td>
@@ -103,6 +104,3 @@ const AdminCompanies = () => {
     )
 }
 export default AdminCompanies;
-
-
-//  'https://www.mintformations.co.uk/blog/wp-content/uploads/2020/05/shutterstock_583717939.jpg

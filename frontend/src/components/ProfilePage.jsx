@@ -27,7 +27,8 @@ const ProfilePage = () => {
     let {headerInfo, userDetails} = getAuthHeaders(); // token
 
     const [show,setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const [notify ,setNotify] = useState(false)
+    const handleClose = () => {setShow(false) , setNotify(false)};
     let navigate = useNavigate();
 
     const [incomingData, setIncomingData] = useState(null);
@@ -54,6 +55,7 @@ const ProfilePage = () => {
     },[])
 
     useEffect(()=>{
+        setNotify(true);
         getData();
     },[])
 
@@ -133,8 +135,7 @@ const ProfilePage = () => {
         {
             toast.warning("Please Update Profile Pic");
             return;
-        }
-        
+        }   
 
         formData.append("fullName", formValues.fullName || "");
         formData.append("email", formValues.email || "");
@@ -173,6 +174,20 @@ const ProfilePage = () => {
 
     return (
     <>
+
+    <Modal show={notify} onHide={handleClose} size="md">
+        <Modal.Body>
+            <p className='font-semibold text-justify'>
+                Keep your profile active!. 
+                Regularly updated profiles have a much higher chance of catching employers' attention. 
+                A 100% complete profile is your best way to stand out from the crowd!
+            </p>
+        </Modal.Body>
+        <Modal.Footer>
+            <button onClick={handleClose}>Close</button>
+        </Modal.Footer>
+    </Modal>
+
     <NavBar />
     <AlertMessage />
     {
@@ -235,7 +250,7 @@ const ProfilePage = () => {
                     </div>
                     <div className="flex items-center">
                         <FontAwesomeIcon icon={faCalendar} className="mr-2 text-purple-500" />
-                        <span>Skills: {incomingData?.profile?.skills || "NA"}</span>
+                        <span>Skills: {(incomingData?.profile?.skills.length) ? incomingData?.profile?.skills : "NA"}</span>
                     </div>
                 </div>
             </div>
@@ -395,9 +410,6 @@ const ProfilePage = () => {
                 </div>
             </form>
             </Modal.Body>
-
-            <Modal.Footer>
-            </Modal.Footer>
         </Modal>
     </>
     )

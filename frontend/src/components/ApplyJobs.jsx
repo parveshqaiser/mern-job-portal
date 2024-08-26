@@ -13,6 +13,7 @@ import { getAuthHeaders } from '../shared/authorization';
 import { toast } from 'react-toastify';
 import { AlertMessage } from '../utils/toastify';
 import useGetApplications from '../shared/useGetApplications';
+import useGetUserData from '../shared/useGetUserData';
 
 const ApplyJobs = () => {
 
@@ -20,9 +21,11 @@ const ApplyJobs = () => {
     let isLoading = useGetJobById(id) // hook
     let {userDetails , headerInfo}= getAuthHeaders();
     useGetApplications();
+    useGetUserData();
 
     let job = useSelector(store => store?.job?.singleJob);
     let application = useSelector(store => store?.application?.allApplication);
+    let user = useSelector(store => store?.auth?.userData)
 
     let navigate = useNavigate();
 
@@ -33,12 +36,17 @@ const ApplyJobs = () => {
         window.scrollTo(0, 0);
     }, []);
 
-
     async function handleApplyJob()
     {
         let data = {
             jobId : id,
             userId : userDetails.userId
+        }
+
+        if(user?.profile && user?.profile?.profilePicture =="")
+        {
+            toast.warning("Please Upload Your Resume");
+            return;
         }
 
         try {
@@ -97,16 +105,24 @@ const ApplyJobs = () => {
                         <span className='mx-3'>Applicants : <span className='text-yellow-600'>{job?.application?.length || "0"}</span></span>
                     </div>   
                     {
-                        isAlreadyApplied ? 
-                        <button disabled={isAlreadyApplied} className='bg-blue-300 text-white cursor-not-allowed py-2 px-4 rounded-md'>Already Applied</button> 
-                        :
-                        <button 
-                            onClick={handleApplyJob}
-                            className='bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded-md'
-                        >
-                            Apply
-                        </button>
-                    }             
+                        job?.isJobExpired ===  "true" ? (
+                            <span className='py-2 px-4 text-red-400 font-semibold'>Application for this Job is Closed</span>
+                        ) : (
+                            isAlreadyApplied ? (
+                                <button 
+                                    disabled={isAlreadyApplied} 
+                                    className='bg-blue-300 text-white cursor-not-allowed py-2 px-4 rounded-md'>
+                                    Already Applied
+                                </button>
+                            ) : (
+                                <button 
+                                    onClick={handleApplyJob}
+                                    className='bg-blue-500 text-white hover:bg-blue-600 py-2 px-4 rounded-md'>
+                                    Apply
+                                </button>
+                            )
+                        )
+                    }                              
                 </div>
             </div>
         

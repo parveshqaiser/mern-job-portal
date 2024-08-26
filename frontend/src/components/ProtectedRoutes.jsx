@@ -16,11 +16,9 @@ const ProtectedRoutes = ({children}) => {
             navigate("/login")
         } else if (userDetails.role !== "Recruiter")
         {
-            console.log("sec case")
             navigate("/home")
         }else if (userDetails.role !== "Student")
         {
-            console.log("third case")
             navigate("/admin/companies");           
         }
     },[])

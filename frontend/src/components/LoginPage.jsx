@@ -142,8 +142,14 @@ const LoginPage = () => {
                 localStorage.setItem("user", JSON.stringify(res.data.user))
 
                 setTimeout(()=>{
-                    navigate("/home");
                     setIsDisabled(false)
+                    if(res?.data?.user?.role =="Student")
+                    {
+                        navigate("/home");
+                    }else {
+                        navigate("/admin/companies");
+                    }
+                    
                 },2500)
             }
         } catch (error) {

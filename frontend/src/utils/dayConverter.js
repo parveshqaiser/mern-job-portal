@@ -14,12 +14,12 @@ function getPostedDays(item)
     }
     if(val ==1)
     {
-        return `${val} day ago `
+        return `${val} day ago`
     }
-    else if(val >31) {
-        return `30+ days ago `
+    else if(val >30) {
+        return `30+ days ago`
     }else {
-        return `${val} day ago `
+        return `${val} days ago`
     }
 }
 

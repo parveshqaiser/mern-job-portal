@@ -42,7 +42,7 @@ const RegisterCompany = () => {
     function handleFileChange(e)
     {
         let file = e.target.files;
-        console.log("file ", file[0]);
+        // console.log("file ", file[0]);
         setFormValues({...formValues, file : file[0]})
     }
 
@@ -109,8 +109,8 @@ const RegisterCompany = () => {
                 <div className='bg-purple-100 p-6 rounded-lg'>
                     <h1 className='text-2xl font-semibold text-center mb-4'>Company Registration</h1>
                     <div className='space-y-4'>
-                        <div className='flex items-center mb-2'>
-                            <label className='text-sm font-medium text-gray-700 w-1/3'>Enter Company Name :</label>
+                        <div className='flex flex-col sm:flex-row items-start sm:items-center mb-2'>
+                            <label className='text-sm font-medium text-gray-700 w-full sm:w-1/3'>Enter Company Name :</label>
                             <input 
                                 type="text" 
                                 value={formValues.companyName}
@@ -118,11 +118,12 @@ const RegisterCompany = () => {
                                 autoComplete='off'
                                 name='companyName'
                                 placeholder='Company Name'
-                                className="w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+                                className='w-full sm:w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300 mt-2 sm:mt-0'
+                                // className="w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
                             />
                         </div>
-                        <div className='flex items-center mb-4'>
-                            <label className='text-sm font-medium text-gray-700 mb-1 w-1/3'>Enter Description :</label>
+                        <div className='flex flex-col sm:flex-row items-start sm:items-center mb-2'>
+                            <label className='text-sm font-medium text-gray-700 w-full sm:w-1/3'>Enter Description :</label>
                             <input 
                                 type="text" 
                                 value={formValues.description}
@@ -130,11 +131,11 @@ const RegisterCompany = () => {
                                 autoComplete='off'
                                 name='description'
                                 placeholder='Description'
-                                className="w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+                                className='w-full sm:w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300 mt-2 sm:mt-0'
                             />
                         </div>
-                        <div className='flex items-center mb-4'>
-                            <label  className='text-sm font-medium text-gray-700 w-1/3'>Enter Website :</label>
+                        <div className='flex flex-col sm:flex-row items-start sm:items-center mb-2'>
+                            <label className='text-sm font-medium text-gray-700 w-1/3'>Enter Website :</label>
                             <input 
                                 type="text" 
                                 value={formValues.website}
@@ -142,11 +143,10 @@ const RegisterCompany = () => {
                                 autoComplete='off'
                                 name='website'
                                 placeholder='Website URL'
-                                className="w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
-                            />
+                                className='w-full sm:w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300 mt-2 sm:mt-0'                            />
                         </div>
-                        <div className='flex items-center'>
-                            <label className='text-sm font-medium text-gray-700 mb-1 w-1/3'>Enter Location :</label>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center mb-2">
+                            <label className='text-sm font-medium text-gray-700 w-full sm:w-1/3'>Enter Location :</label>
                             <input 
                                 type="text" 
                                 value={formValues.location}
@@ -154,10 +154,10 @@ const RegisterCompany = () => {
                                 onChange={handleChange}
                                 name='location'
                                 placeholder='Location'
-                                className="w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
+                                className='w-full sm:w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300 mt-2 sm:mt-0'
                             />
                         </div>
-                        <div className='flex items-center'>
+                        <div className='flex flex-col sm:flex-row items-start sm:items-center mb-2'>
                             <label className='text-sm font-medium text-gray-700 mb-1 w-1/3'>Enter Logo :</label>
                             <input 
                                 type="file" 

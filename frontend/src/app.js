@@ -15,6 +15,7 @@ import CreateJobs from "./components/Admin/CreateJobs";
 import AdminJobsApplicant from "./components/Admin/AdminJobsApplicant";
 import ApplyJobs from "./components/ApplyJobs";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import UpdateJob from "./components/Admin/UpdateJob";
 
 
 const App = ()=>{
@@ -71,6 +72,10 @@ const App = ()=>{
     {
         path : "/admin/jobs/create",
         element : <ProtectedRoutes> <CreateJobs /> </ProtectedRoutes>
+    },
+    {
+        path : "/admin/jobs/update/:id",
+        element : <ProtectedRoutes> <UpdateJob /> </ProtectedRoutes>
     },
     {
         path : "/admin/jobs/:id/applicants",

@@ -10,7 +10,7 @@ const LatestJobOpenings = () => {
 
     return (
         <div className='my-10 max-w-7xl mx-auto sm:px-6'>
-            <h1 className='font-bold text-3xl text-center'>Latest Jobs & <span className='text-orange-500'>Openings</span> </h1>
+            <h1 className='font-bold text-3xl text-center'>Current Openings & <span className='text-orange-500'>Positions</span> </h1>
             <div className='grid grid-cols-1 md:grid-cols-3  gap-3 my-5'>
                 {
                     jobs && jobs.length ? 

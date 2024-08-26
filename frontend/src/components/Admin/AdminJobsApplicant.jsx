@@ -17,7 +17,7 @@ const AdminJobsApplicant = () => {
 
     const [tableData , setTableData] = useState([]);
     const [isLoading , setIsLoading] = useState(false);
-    const [callFunction , setCallFunction] = useState(false);
+    const [visitedRows, setVisitedRows] = useState([]);
 
     let headerInfo = getAuthHeadersOfApplicationJson();
 
@@ -42,25 +42,38 @@ const AdminJobsApplicant = () => {
         }
     }
 
+    async function handleResumeViewed(status, id)
+    {
+        let data = {
+            status : status,
+            jobId : tableData[0]?._id?.jobId,
+        };
+        setVisitedRows([...visitedRows ,id]);
+        try {
+            let res = await axios.post(`${commonEndPoints}/updateApplicationStatus/${id}`, data, {headers : headerInfo});
+            console.log(res);
+        } catch (error) {
+            console.log("err ", error);
+            toast.error(error.response?.data?.message);
+        }
+    }
+
     async function handleSubmitStatus(status , id)
     {
         let data = {
             status : status,
             jobId : tableData[0]?._id?.jobId,
         };
-        console.log(data);
 
         try {
             let res = await axios.post(`${commonEndPoints}/updateApplicationStatus/${id}`, data, {headers : headerInfo});
-            // setCallFunction(true)
-            if(res.data.success)
+            if(res?.data?.success);
             {
                 toast.success(res?.data?.message);
             }
         } catch (error) {
             console.log("err ", error);
             toast.error(error.response?.data?.message);
-            // setCallFunction(false)
         }
     }
     
@@ -76,7 +89,7 @@ const AdminJobsApplicant = () => {
             </div>
             <h1 className='text-center font-bold my-2'>Job Info</h1>
             <hr className='w-full mx-auto' />
-            <div className='flex justify-around my-2'>
+            <div className='flex flex-col sm:flex-row sm:justify-around my-2 space-y-2 sm:space-y-0'>
             {
                 tableData && tableData.length >0 && (
                 <>
@@ -113,9 +126,10 @@ const AdminJobsApplicant = () => {
                                 <td className='p-2 border border-gray-400'>{val?.email}</td>
                                 <td className='p-2 border border-gray-400'>
                                     <a 
+                                        onClick={()=>handleResumeViewed("Resume Viewed", `${val?.userId}`)}
                                         target= "_blank"
                                         download 
-                                        className={`${val?.profile?.resumeName ? "text-blue-500 underline" : ""}`}
+                                        className={`${visitedRows.includes(val?.userId) ? "text-orange-500" : "text-blue-500 underline"}`}
                                         href={val?.profile?.resumeLink}
                                     >
                                         {val?.profile?.resumeName || "Not Uploaded"}
@@ -123,23 +137,23 @@ const AdminJobsApplicant = () => {
                                 </td>
                                 <td className='p-2 border border-gray-400'>
                                 {
-                                    val?.status =="Pending" ? 
-                                    <>
-                                    <FontAwesomeIcon 
-                                        className='cursor-pointer w-6 h-6 mr-2 text-green-500'
-                                        icon={faThumbsUp} 
-                                        title='Approve'
-                                        onClick={()=>handleSubmitStatus("Accepted",`${val?.userId}`,)}
-                                    />
-                                    <FontAwesomeIcon 
-                                        className='cursor-pointer w-6 h-6 ml-2 text-red-700'
-                                        icon={faXmark} 
-                                        title='Reject'
-                                        onClick={()=>handleSubmitStatus("Rejected" ,`${val?.userId}`)}
-                                    />
-                                    </> : <span>{val.status}</span>
+                                    (val?.status =="Pending" || val?.status == "Resume Viewed") ? 
+                                    <div className='flex space-x-2'>
+                                        <FontAwesomeIcon 
+                                            className='cursor-pointer w-6 h-6 mr-2 text-green-500'
+                                            icon={faThumbsUp} 
+                                            title='Approve'
+                                            onClick={()=>handleSubmitStatus("Accepted",`${val?.userId}`)}
+                                        />
+                                        <FontAwesomeIcon 
+                                            className='cursor-pointer w-6 h-6 ml-2 text-red-700'
+                                            icon={faXmark} 
+                                            title='Reject'
+                                            onClick={()=>handleSubmitStatus("Rejected" ,`${val?.userId}`)}
+                                        />
+                                    </div> : 
+                                    <span>{val.status}</span>
                                 } 
-                                    
                                 </td>
                             </tr>
                         )) : (

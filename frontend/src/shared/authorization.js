@@ -1,6 +1,6 @@
 
 
-// use this there is file upload
+// use this whenever there is file upload
 export const getAuthHeaders = () => {
 
     let userDetails = undefined;
