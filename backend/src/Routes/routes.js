@@ -18,7 +18,6 @@ router.post("/register", userRegistration);
 router.post("/login", loginAccount);
 router.get("/getUserData",authentication ,getUserData);
 router.get("/logout", logoutAccount);
-
 router.post("/update/profile",authentication,singleUpload.array("file",2), async(req, res)=>{
     try {
 
