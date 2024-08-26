@@ -1,5 +1,5 @@
 
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 let jobSchema = new mongoose.Schema({
     jobId : {
@@ -37,6 +37,10 @@ let jobSchema = new mongoose.Schema({
     openings : {
         type :String,
         required : true,
+    },
+    isJobExpired : {
+        type : String,
+        default : false
     },
     jobType : {
         type :String,

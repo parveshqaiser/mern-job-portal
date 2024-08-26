@@ -4,7 +4,7 @@ import express from "express";
 import {userRegistration , loginAccount , logoutAccount, updateProfile, getUserData} from "../Controller/userController.js";
 import {registerCompany, updateCompanyDetails, getCompanyDetails, getCompanyDetailsById} from "../Controller/companyController.js"
 import authentication from "../Middleware/authentication.js";
-import {createJobs, getAdminJobs, getAllJobs, getJobById } from "../Controller/jobController.js";
+import {createJobs, getAdminJobs, getAllJobs, getJobById, updateJob } from "../Controller/jobController.js";
 import { applyForJobs, getApplicants, getAllJobsAppliedByStudent,updateApplicationStatus } from "../Controller/applicationController.js";
 import {singleUpload} from "../Middleware/multer.js";
 import cloudUpload from "../Utils/cloudinary.js";
@@ -107,6 +107,7 @@ router.post("/createJobs", authentication, createJobs);
 router.get("/getAllJobs",authentication, getAllJobs);
 router.get("/getJobById/:id", authentication , getJobById);
 router.get("/getAdminJobs", authentication , getAdminJobs);
+router.post("/update/job/:id" , authentication ,updateJob )
 
 
 // application

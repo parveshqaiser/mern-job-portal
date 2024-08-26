@@ -1,8 +1,7 @@
 
-import {jobDetails } from "../Model/jobSchema.js";
+import {jobDetails} from "../Model/jobSchema.js";
 import {nanoid} from "nanoid";
 
-// will use by admin
 export const createJobs = async (req,res)=>{
     try {
         let{title, description, requirements, salary, location, openings, jobType, company , workExperience , qualification} = req.body;
@@ -14,12 +13,12 @@ export const createJobs = async (req,res)=>{
             return res.status(400).json({message : "Some Input field missing", success : false})
         }
 
-        // note : company id is inserted manually
         let generateJobId = await nanoid(8);
 
         let insertJob = await jobDetails.create({
             jobId : generateJobId,
             title,
+            isJobExpired : "false",
             description,
             requirements :requirements.split(",") || [],
             salary, 
@@ -49,7 +48,6 @@ export const createJobs = async (req,res)=>{
     }
 }
 
-// will use by student
 export const getAllJobs = async(req, res)=>{
     try {
         let keyword = req.query.keyword || "";
@@ -112,7 +110,6 @@ export const getAllJobs = async(req, res)=>{
         });
     }
 }
-
 
 export const getJobById = async(req,res)=>{
 
@@ -199,13 +196,50 @@ export const getAdminJobs = async(req, res)=>{
             }
         ];
 
-
         let getJobByUserId = await  jobDetails.aggregate(query);
 
         return res.status(200).json({getJobByUserId , success : true , message : getJobByUserId.length ? "Jobs Fetched" :"Jobs Admin Jobs" })
 
     } catch (error) {
         console.log("error getting admin job by ID", error);
+        return res.status(500).json({
+            message: "An internal server error occurred. Please try again later.",
+            success: false
+        });
+    }
+}
+
+export const updateJob = async(req, res)=>{
+
+    try {
+        let jobId = req.params.id;
+
+        let {title, isJobExpired, description, salary, location,openings, jobType , qualification,workExperience} = req.body;
+
+        if(!title || !description || !salary || !location || !openings || !jobType || !qualification || !workExperience) 
+        {
+            return res.status(400).json({message : "Some Input field missing", success : false})
+        }
+
+        let update = await jobDetails.findOne({jobId});
+
+        update.title = title || "",
+        update.isJobExpired = isJobExpired || "",
+        update.isJobExpired = isJobExpired || "",
+        update.description = description || "",
+        update.salary = salary || "",
+        update.location = location || "",
+        update.openings = openings || "",
+        update.jobType = jobType || "",
+        update.qualification = qualification || "",  
+        update.workExperience = workExperience || ""    
+
+        await update.save();
+
+        return res.status(200).json({message :"Job Updated", success : true});
+
+    } catch (error) {
+        console.log("error in updating job id", error);
         return res.status(500).json({
             message: "An internal server error occurred. Please try again later.",
             success: false
