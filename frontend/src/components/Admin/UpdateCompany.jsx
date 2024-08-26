@@ -7,6 +7,7 @@ import { getAuthHeaders } from '../../shared/authorization';
 import axios from 'axios';
 import { commonEndPoints } from '../../utils/api';
 import { toast } from 'react-toastify';
+import { removeDomElementsFromInput } from '../../utils/domSanitize';
 
 const UpdateCompany = () => {
 
@@ -57,7 +58,16 @@ const UpdateCompany = () => {
     function handleChange(e)
     {
         let {name, value} = e.target;
-        setFormValues({...formValues , [name] : value})
+        let sanitize = removeDomElementsFromInput(value);
+        value = sanitize;
+
+        if(name == "companyName" || name =="description" || name == "location")
+        {
+            value = value.charAt(0).toUpperCase() + value.slice(1);
+            setFormValues({...formValues, [name] : value})
+        }else {
+            setFormValues({...formValues, [name] : value})
+        }
     }
 
     function handleFileChange(e)

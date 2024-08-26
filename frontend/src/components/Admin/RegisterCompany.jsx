@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import NavBar from '../NavBar'
 import { useNavigate } from 'react-router-dom';
-import { getAuthHeaders } from '../../shared/authorization';
+import {getAuthHeaders} from '../../shared/authorization';
 import { removeDomElementsFromInput } from '../../utils/domSanitize';
 import { toast } from 'react-toastify';
 import { AlertMessage } from '../../utils/toastify';
@@ -12,6 +12,7 @@ import { commonEndPoints } from '../../utils/api';
 const RegisterCompany = () => {
 
     let navigate = useNavigate();
+
     let {headerInfo} = getAuthHeaders();
 
     const [isDisabled , setIsDisabled] = useState(false);
@@ -42,7 +43,7 @@ const RegisterCompany = () => {
     function handleFileChange(e)
     {
         let file = e.target.files;
-        // console.log("file ", file[0]);
+        console.log("file ", file[0]);
         setFormValues({...formValues, file : file[0]})
     }
 
@@ -77,6 +78,10 @@ const RegisterCompany = () => {
         if(formValues.file){
             formData.append("file", formValues.file || "");
         }
+
+        formData.forEach((key, val)=>{
+            console.log(val ,key);
+        })
 
         try {
             setIsDisabled(true)
