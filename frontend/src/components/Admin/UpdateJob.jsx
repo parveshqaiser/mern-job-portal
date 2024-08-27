@@ -109,7 +109,7 @@ const UpdateJob = () => {
             <div className='bg-[#cebce0] p-4 rounded-lg'>
                 <h1 className='text-2xl font-semibold text-center mb-2'>Update Job</h1>
                 <p className='text-red-600 text-center'>All are Required Fields</p>
-                <div className='grid grid-cols-2 gap-3'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
                     <div>
                         <label className='block text-sm font-medium text-gray-700 '>Enter Job Title</label>
                         <input 
@@ -132,7 +132,7 @@ const UpdateJob = () => {
                             <option value="true">True</option>
                         </select>
                     </div>                    
-                    <div className='col-span-2'>
+                    <div className='sm:col-span-2'>
                         <label className='block text-sm font-medium text-gray-700'>Enter Job Description</label>
                         <textarea 
                             value={formValues.description}
@@ -187,7 +187,7 @@ const UpdateJob = () => {
                             className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
                         />
                     </div>
-                    <div className='col-span-2 mt-2'>
+                    <div className='sm:col-span-2 mt-2'>
                         <label className='block text-sm font-medium text-gray-700'>Enter Qualification</label>
                         <textarea 
                             rows={2}

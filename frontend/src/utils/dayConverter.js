@@ -29,7 +29,6 @@ export default getPostedDays;
 export function modifyDateFormat(item)
 {
     let [year, month, date] = item?.split('-');
-    console.log(item);
     return `${date}-${month}-${year}`
 }
 

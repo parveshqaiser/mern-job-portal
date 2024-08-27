@@ -90,7 +90,7 @@ const App = ()=>{
 
     return(
         <RouterProvider router={appRoutes}>
-            
+
         </RouterProvider>
     )
 }
