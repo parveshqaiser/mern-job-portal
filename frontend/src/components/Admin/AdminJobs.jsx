@@ -8,6 +8,7 @@ import { getAuthHeaders } from '../../shared/authorization'
 import axios from 'axios'
 import { commonEndPoints } from '../../utils/api'
 import { AlertMessage } from '../../utils/toastify'
+import { modifyDateFormat } from '../../utils/dayConverter'
 
 const AdminJobs = () => {
 
@@ -104,7 +105,7 @@ const AdminJobs = () => {
                             <td>{val.jobType}</td>
                             <td>{val?.openings}</td>
                             <td>{val.location}</td>
-                            <td>{val.createdAt.split("T")[0]}</td>
+                            <td>{modifyDateFormat(val.createdAt.split("T")[0])}</td>
                             <td className='flex space-x-2'>
                                 <FontAwesomeIcon  
                                     onClick={()=> navigate(`/admin/jobs/${val?.jobId}/applicants`)}

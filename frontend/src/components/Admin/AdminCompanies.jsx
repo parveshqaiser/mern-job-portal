@@ -8,6 +8,7 @@ import {useSelector } from 'react-redux'
 import useGetAllCompanies from "../../shared/useGetALlCompanies";
 import { AlertMessage } from '../../utils/toastify'
 import { defaultImageLogo } from '../../utils/constants'
+import { modifyDateFormat } from '../../utils/dayConverter'
  
 const AdminCompanies = () => {
 
@@ -57,7 +58,7 @@ const AdminCompanies = () => {
                     <tr>
                         <th>S.No</th>
                         <th>Logo</th>
-                        <th>Company Name</th>
+                        <th>Company</th>
                         <th>Registered Date</th>
                         <th>Action</th>
                     </tr>
@@ -78,7 +79,7 @@ const AdminCompanies = () => {
                                 />
                             </td>
                             <td>{val.companyName}</td>
-                            <td>{val?.createdAt?.split("T")[0]}</td>
+                            <td>{modifyDateFormat(val?.createdAt?.split("T")[0])}</td>
                             <td>
                                 <FontAwesomeIcon onClick={()=> navigate(`/admin/companies/update/${val.companyId}`)} icon={faUserPen} title='Edit Company'  className='cursor-pointer text-purple-500 w-6 h-6' />
                             </td>

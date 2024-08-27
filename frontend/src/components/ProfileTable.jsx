@@ -1,6 +1,7 @@
 
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { modifyDateFormat } from '../utils/dayConverter';
 
 const ProfileTable = ({isLoading}) => {
 
@@ -30,7 +31,7 @@ const ProfileTable = ({isLoading}) => {
                             </td>
                             <td className='p-2 border border-gray-400'>{val?.companyDetails?.companyName}</td>
                             <td className='p-2 border border-gray-400'>{val?.jobDetails?.title}</td>
-                            <td className='p-2 border border-gray-400'>{val?.createdAt?.split("T")[0]}</td>
+                            <td className='p-2 border border-gray-400'>{modifyDateFormat(val?.createdAt?.split("T")[0])}</td>
                             <td className='p-2 border border-gray-400'>
                                 <span className={`text-sm px-2 py-1 rounded 
                                 ${val.status == "Accepted"? "bg-green-200 text-green-600" : val.status=="Rejected" ? "text-red-600 bg-red-300" : "bg-gray-200"}  `}>
