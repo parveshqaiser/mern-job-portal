@@ -87,7 +87,7 @@ export const getCompanyDetails = async(req, res)=>{
 
     try {
        
-        let getAllData = await companyDetails.find({});
+        let getAllData = await companyDetails.find({}).sort({ createdAt: -1 });
 
         return res.status(200).json({
             getAllData,
