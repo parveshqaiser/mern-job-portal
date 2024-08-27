@@ -8,7 +8,7 @@ const ProfileTable = ({isLoading}) => {
 
     return (
         <div className='overflow-x-auto'>
-            <table className='table-auto w-full my-4 border-collapse'>
+            <table className='table-auto min-w-full my-4 border-collapse'>
                 <thead>
                     <tr className='bg-gray-300'>
                         <th className='p-2 border border-gray-400'>Logo</th>

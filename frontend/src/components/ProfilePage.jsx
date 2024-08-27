@@ -175,7 +175,7 @@ const ProfilePage = () => {
     return (
     <>
 
-    <Modal show={notify} onHide={handleClose} size="md">
+    <Modal  onHide={handleClose} size="md">
         <Modal.Body>
             <p className='font-semibold text-justify'>
                 Keep your profile active!. 
@@ -193,73 +193,78 @@ const ProfilePage = () => {
     {
         loading ? <div className='text-center font-semibold'>Loading...</div> :
         <div className="max-w-6xl mx-auto mt-5 mb-2 p-3 border rounded-lg shadow-lg bg-white">
-        <div className="flex items-center">
-            <div className="w-1/4 flex justify-center relative">
+            <div className="flex flex-col sm:flex-row items-center">
+                <div className="w-full sm:w-1/4 flex justify-center sm:justify-center relative mb-4 sm:mb-0">
 
-                <img src={incomingData?.profile?.profilePicture || uploadPic}
-                    className="w-36 h-36 rounded-full border-2 border-gray-200" 
-                    alt="Profile Pic" 
-                />
-                <span className={`absolute ${incomingData?.profile && Object.keys(incomingData.profile).length>=7 ? "bg-green-500" : "bg-yellow-500"} text-white text-xs px-2 py-1 rounded-full`} >
-                 {incomingData?.profile && Object.keys(incomingData.profile).length>=7 ? "90%" : "50%"}
-                </span>
-            </div>
-            <div className="w-3/4 pl-6">
-                <div className="my-3 ">
-                    <div className='flex justify-between'>
-                        <h2 className="text-2xl font-bold text-gray-800">{incomingData?.fullName || "NA"}</h2>
-                        <FontAwesomeIcon icon={faUserPen} 
-                            title="Edit Profile" 
-                            onClick={handleOpenModal} 
-                            className="cursor-pointer mr-2 text-green-600 w-6 h-6 hover:text-green-800 transition duration-300" 
-                        />
-                    </div>
-                    <p className="text-lg text-gray-600">
-                        {incomingData?.profile?.bio || "NA"} {incomingData?.profile?.currentCompany && 
-                        <span className="font-semibold text-blue-600">at {incomingData?.profile?.currentCompany}</span>}
-                    </p>
+                    <img src={incomingData?.profile?.profilePicture || uploadPic}
+                        className="w-36 h-36 rounded-full border-2 border-gray-200" 
+                        alt="Profile Pic" 
+                    />
+                    <span className={`absolute ${incomingData?.profile && Object.keys(incomingData.profile).length>=7 ? "bg-green-500" : "bg-yellow-500"} text-white text-xs px-2 py-1 rounded-full`} >
+                    {incomingData?.profile && Object.keys(incomingData.profile).length>=7 ? "90%" : "50%"}
+                    </span>
                 </div>
-                <hr className="my-2" />
-                <div className="grid grid-cols-2 gap-4 text-gray-700">
-                    <div className="flex items-center">
-                        <FontAwesomeIcon icon={faEnvelopeOpenText} className="mr-2 text-blue-500" />
-                        <span>{incomingData?.email || "NA"}</span>
+                <div className="w-full sm:w-3/4 sm:pl-6">
+                    {/* first */}
+                    <div className="my-3 ">
+                        <div className='flex justify-between'>
+                            <h2 className="text-2xl font-bold text-gray-800">{incomingData?.fullName || "NA"}</h2>
+                            <FontAwesomeIcon icon={faUserPen} 
+                                title="Edit Profile" 
+                                onClick={handleOpenModal} 
+                                className="cursor-pointer mr-2 text-green-600 w-6 h-6 hover:text-green-800 transition duration-300" 
+                            />
+                        </div>
+                        <p className="text-lg text-gray-600">
+                            {incomingData?.profile?.bio || "NA"} {incomingData?.profile?.currentCompany && 
+                            <span className="font-semibold text-blue-600">at {incomingData?.profile?.currentCompany}</span>}
+                        </p>
                     </div>
-                    <div className="flex items-center">
-                        <FontAwesomeIcon icon={faPhoneSquare} className="mr-2 text-green-500" />
-                        <span>+91- {incomingData?.mobile || "NA"}</span>
+
+                    <hr className="my-2" />
+
+                    {/* second */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+                        <div className="">
+                            <FontAwesomeIcon icon={faEnvelopeOpenText} className="mr-2 text-blue-500" />
+                            <span>{incomingData?.email || "NA"}</span>
+                        </div>
+                        <div className="">
+                            <FontAwesomeIcon icon={faPhoneSquare} className="mr-2 text-green-500" />
+                            <span>+91- {incomingData?.mobile || "NA"}</span>
+                        </div>
+                        <div className="">
+                            <FontAwesomeIcon icon={faLocationDot} className="mr-2 text-red-500" />
+                            <span>{incomingData?.profile?.address || "NA"}</span>
+                        </div>
+                        <div className="">
+                            <FontAwesomeIcon icon={faBriefcase} className="mr-2 text-yellow-500" />
+                            <span>{incomingData?.profile?.totalExp == "0" ? "Fresher" : incomingData?.profile?.totalExp}</span>
+                        </div>
+                        <div className="">
+                            <FontAwesomeIcon icon={faFilePdf} className="mr-2 text-gray-500" />
+                            <span>Resume: </span>&nbsp;
+                            <a target="_blank" 
+                                // download={incomingData?.profile?.resumeLink || "NA"} 
+                                href={incomingData && (incomingData?.profile?.resumeLink)} 
+                                className="hover:underline hover:text-blue-600 cursor-pointer"
+                            >
+                                {incomingData?.profile?.resumeName || "Please Upload Resume"}
+                            </a>
+                        </div>
+                        <div className="">
+                            <FontAwesomeIcon icon={faCalendar} className="mr-2 text-purple-500" />
+                            <span>Skills: {(incomingData?.profile?.skills.length) ? incomingData?.profile?.skills : "NA"}</span>
+                        </div>
                     </div>
-                    <div className="flex items-center">
-                        <FontAwesomeIcon icon={faLocationDot} className="mr-2 text-red-500" />
-                        <span>{incomingData?.profile?.address || "NA"}</span>
-                    </div>
-                    <div className="flex items-center">
-                        <FontAwesomeIcon icon={faBriefcase} className="mr-2 text-yellow-500" />
-                        <span>{incomingData?.profile?.totalExp == "0" ? "Fresher" : incomingData?.profile?.totalExp}</span>
-                    </div>
-                    <div className="flex items-center">
-                        <FontAwesomeIcon icon={faFilePdf} className="mr-2 text-gray-500" />
-                        <span>Resume: </span>&nbsp;
-                        <a target="_blank" 
-                            // download={incomingData?.profile?.resumeLink || "NA"} 
-                            href={incomingData && (incomingData?.profile?.resumeLink)} 
-                            className="hover:underline hover:text-blue-600 cursor-pointer"
-                        >
-                            {incomingData?.profile?.resumeName || "Please Upload Resume"}
-                        </a>
-                    </div>
-                    <div className="flex items-center">
-                        <FontAwesomeIcon icon={faCalendar} className="mr-2 text-purple-500" />
-                        <span>Skills: {(incomingData?.profile?.skills.length) ? incomingData?.profile?.skills : "NA"}</span>
-                    </div>
+
                 </div>
             </div>
-        </div>
         </div>
     }
 
     <div className='max-w-6xl mx-auto mt-2'>
-        <h1 className='font-semibold text-orange-500'>Your Recent Applied Jobs</h1>
+        <h1 className='font-semibold text-orange-500 text-center'>Your Recent Applied Jobs</h1>
         <ProfileTable isLoading={isLoading}/>
     </div>
 
@@ -368,7 +373,7 @@ const ProfilePage = () => {
                         value={formValues.totalExp}
                         className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
                 </div>
-                <div className='flex justify-between'>   
+                <div className='flex flex-col sm:flex-row justify-between'>   
                     <div>
                         <label className="">Please Upload Updated Resume <span className='text-red-600 font-bold'> *</span></label>
                         <input 

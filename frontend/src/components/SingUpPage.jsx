@@ -118,7 +118,7 @@ const SingUpPage = () => {
         let phoneExp = new RegExp("^[6-9]\\d{9}$");  
         let emailExp = new RegExp(/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/);
 
-        if(!fullName.value){
+        if(!fullName.value || fullName.value.trim()== ""){
             setFormValues({...formValues, fullName : {...formValues.fullName , error : "Required"}})
             return;
         }
@@ -191,7 +191,7 @@ const SingUpPage = () => {
         <>
         <AlertMessage />
         <NavBar />
-        <div className="min-h-screen flex flex-col md:flex-row justify-center mt-5 mb-2 md:mx-10">
+        <div className="min-h-screen flex flex-col md:flex-row justify-center items-center md:items-start mt-5 mb-2 md:mx-10">
             <div className="w-full md:w-3/5 bg-cover object-cover bg-center rounded-lg m-2">
             {/* style={{backgroundImage : `url(${image})`}} */}
                 <img src={image} className='rounded-lg' />

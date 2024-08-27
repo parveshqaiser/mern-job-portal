@@ -162,7 +162,7 @@ const LoginPage = () => {
     <>
         <NavBar />
         <AlertMessage />
-        <div className="min-h-screen flex flex-col md:flex-row  justify-center mt-5 mb-2 md:mx-10">
+        <div className="min-h-screen flex flex-col md:flex-row justify-center items-center  md:items-start mt-5 mb-2 md:mx-10">
             <div className="w-full md:w-3/5 bg-cover bg-center object-cover m-2">
                 <img src={image} className="rounded-lg" />
             </div>
