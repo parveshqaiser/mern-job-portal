@@ -22,7 +22,7 @@ const MainSection = () => {
         <div className='mt-3 text-center md:px-0'>
             <div className='flex flex-col gap-4 text-center'>
                 <h1 className='text-xl sm:text-2xl bg-gray-200 max-w-[90%] sm:max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg mx-auto rounded-md py-2 px-4'>Your Dream Job is Just a Click Away</h1>
-                <span className='text-3xl font-bold'>Search, Apply & <br/> <span className='text-orange-500'> Get Your Dream Job</span> </span>
+                <span className='text-3xl font-bold'>Discover, Apply & <br/> <span className='text-orange-500'> Get Your Dream Job</span> </span>
             </div>
             <p className='mt-2  text-gray-600'>
                 Find the <span className='text-blue-500 text-lg font-medium'>Perfect Job</span> , wherever you are. <br />

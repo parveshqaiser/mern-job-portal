@@ -12,7 +12,7 @@ const HomePage = () => {
 
     let navigate = useNavigate();
     let {userDetails} = getAuthHeaders();
-    useGetAllJobs();
+    let{loading} =useGetAllJobs();
 
     useEffect(()=>{
         if(userDetails && userDetails.role && userDetails.role=="Recruiter")
@@ -24,13 +24,13 @@ const HomePage = () => {
         }
     },[])
     return (
-        <div>
+        <>
             <AlertMessage />
             <NavBar />
             <MainSection />
-            <LatestJobOpenings />
+            <LatestJobOpenings loading={loading}/>
             <Footer />
-        </div>
+        </>
     )
 }
 

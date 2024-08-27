@@ -3,7 +3,7 @@ import LatestJobCards from './LatestJobCards';
 
 import {useSelector } from 'react-redux';
 
-const LatestJobOpenings = () => {
+const LatestJobOpenings = ({loading}) => {
 
     let jobs = useSelector(store => store?.job?.allJobs);
 
@@ -13,6 +13,7 @@ const LatestJobOpenings = () => {
             <h1 className='font-bold text-3xl text-center'>Current Openings & <span className='text-orange-500'>Positions</span> </h1>
             <div className='grid grid-cols-1 md:grid-cols-3  gap-3 my-5'>
                 {
+                    loading ? <div className='text-right font-semibold'>Loading...</div> :
                     jobs && jobs.length ? 
                     (jobs?.slice(0,6)?.map(val => <LatestJobCards val={val} key={val?._id}/>)) : 
                     (<div className='flex items-center justify-center ml-10 text-red-500'>No Jobs Available</div>)
