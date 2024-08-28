@@ -45,7 +45,7 @@ const ApplyJobs = () => {
 
         if(user?.profile && user?.profile?.profilePicture =="")
         {
-            toast.warning("Please Upload Your Resume");
+            toast.warning("Please Update Your Profile to Apply for Jobs");
             return;
         }
 

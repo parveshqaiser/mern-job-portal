@@ -19,8 +19,8 @@ import useGetApplications from '../shared/useGetApplications';
 import ProfileTable from './ProfileTable';
 import { getAuthHeaders } from '../shared/authorization';
 import { useNavigate } from 'react-router-dom';
+import useFormValues from '../shared/useFormValues';
 
-// note , flex items-start [here items start no work] , flex flex-col also not work , flex items-center
 const ProfilePage = () => {
 
     let {isLoading} = useGetApplications(); // hook
@@ -34,18 +34,11 @@ const ProfilePage = () => {
     const [incomingData, setIncomingData] = useState(null);
     const [isDisabled , setIsDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [formValues, setFormValues] = useState({
-        fullName : "", 
-        email : "", 
-        mobile :"", 
-        file :"", 
-        profilePicture : "",
-        bio : "", 
-        skills: "",
-        address : "",
-        totalExp : "",
-        currentCompany : "",
-    });
+
+    let [formValues ,setFormValues] = useFormValues();
+
+    let emailExp = new RegExp(/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/);
+    let phoneExp = new RegExp("^[6-9]\\d{9}$"); 
 
     useEffect(()=>{
         if(userDetails?.role == "Recruiter")
@@ -80,76 +73,163 @@ const ProfilePage = () => {
     function handleOpenModal()
     {
         setFormValues({
-            fullName : incomingData.fullName || "",
-            profilePicture : incomingData?.profile?.profilePicture || "",
-            email : incomingData.email || "",
-            mobile : incomingData.mobile || "",
-            skills : incomingData?.profile?.skills?.map(val=> val) || "",
-            bio : incomingData?.profile?.bio || "",
-            address : incomingData?.profile?.address || "",
-            totalExp : incomingData?.profile?.totalExp || "",
-            currentCompany : incomingData?.profile?.currentCompany || "",
-            file : "",
+            fullName : {value : incomingData.fullName || "", error :""},
+            profilePicture : {value : incomingData?.profile?.profilePicture || "" ,error :""},
+            email : {value : incomingData.email || "" , error :""},
+            mobile : {value : incomingData.mobile || "" , error :""},
+            skills : {value : incomingData?.profile?.skills?.map(val=> val) || "", error :""},
+            bio : {value : incomingData?.profile?.bio || "", error :""},
+            address : {value : incomingData?.profile?.address || "" , error :""},
+            totalExp : {value : incomingData?.profile?.totalExp || "" , error :""},
+            currentCompany : {value : incomingData?.profile?.currentCompany || "", error :""},
+            file : {value : "" ,error :""},
         });
         setShow(true);
     }
 
     function handleFileChange(e)
     {
-       let val = e.target.files[0];
-       let name = e.target.name;
+        let val = e.target.files[0];
+        let name = e.target.name;
 
-       if(name == "file")
-       {
-        setFormValues({...formValues, file : val});
-       }
+        let newValues = {...formValues};
 
-       if(name == "profilePicture")
-       {
-        setFormValues({...formValues, profilePicture : val})
-       }       
+        newValues[name] = {
+            value : val,
+            error : !val ? "Please Upload File" :"",    
+        }
+
+        setFormValues(newValues);
     }
 
     function handleChange(e)
     {
         let {name,value} = e.target;
-
-        if(name == "mobile")
+        let newValues = {...formValues}
+    
+        if(name == "fullName" || name == "bio" || name == "address")
         {
-            value = value && value >= 6 ? parseInt(value) || "" : "";
-            setFormValues({...formValues , [name] : value});
+            value = value.charAt(0).toUpperCase() + value.slice(1);
+            newValues[name] = {
+                value : value,
+                error : !value ? "Required" :"",
+            }
+        }
+        else if (name == "email")
+        {
+            newValues[name] = {
+                value : value,
+                error : !value ? "Required" : (!emailExp.test(value)) ? "Invalid Email" : "",
+            }
+        }
+        else if(name == "mobile")
+        {
+            newValues[name] = {
+                value : value && value >= 6 ? parseInt(value) || "" :"",
+                error : !value ? "Required" : (value >=0 && value <=5) ? "Mobile Number must start between 6-9 & must be 10 digits":"",
+            }
+        }
+        else if(name == "totalExp")
+        {
+            value = parseInt(value) || "0";
+            newValues[name] = {
+                value : value,
+                error : !value ? "Required" :"",
+            }
+        }
+        else {
+            newValues[name] = {
+                value : value,
+                error : "",
+            }
         }
 
-        setFormValues({...formValues, [name] : value})
+        setFormValues(newValues);
     }
 
     async function handleSubmit()
     {
         const formData = new FormData();
-        if(formValues.file=="")
+
+        let {fullName , email, mobile ,bio,address , totalExp} = formValues;
+
+        if(!fullName.value || fullName?.value?.trim() == "")
+        {
+            setFormValues({...formValues, 
+                fullName : {
+                    ...formValues.fullName , 
+                    error : "Required"
+                }});
+            return;
+        }
+
+        if(!email.value){
+            setFormValues({
+                ...formValues,
+                email : {
+                    ...formValues.email,
+                    error : (!emailExp.test(email.value)) ? "Invalid Email" : "Required"
+                }
+            })
+            return;
+        }
+
+        if (!mobile.value || !phoneExp.test(mobile.value))
+        {
+            setFormValues({
+                ...formValues,
+                mobile : {
+                    ...formValues.mobile,
+                    error :!mobile.value ? "Required" :"Invalid Number",
+                }
+            });
+            return;
+        }
+
+        if(!bio.value || bio?.value?.trim() == "")
+        {
+            setFormValues({...formValues, 
+                bio : {
+                    ...formValues.bio, 
+                    error : "Required"
+                }});
+            return;
+        }
+
+        if(!address.value || address?.value?.trim() == "")
+        {
+            setFormValues({...formValues, 
+                address : {
+                    ...formValues.address, 
+                    error : "Required"
+                }});
+            return;
+        }
+
+        if(formValues.file.value=="")
         {
             toast.warning("Please Upload Your Resume");
             return;
         }
-        if(formValues.profilePicture=="")
+        if(formValues.profilePicture.value=="")
         {
             toast.warning("Please Update Profile Pic");
             return;
         }   
 
-        formData.append("fullName", formValues.fullName || "");
-        formData.append("email", formValues.email || "");
-        formData.append("mobile", formValues.mobile || "");
-        formData.append("bio", formValues.bio || "");
-        formData.append("skills", formValues.skills || "");
-        formData.append("address", formValues.address || "");
-        formData.append("totalExp", formValues.totalExp || "");
-        formData.append("currentCompany" , formValues.currentCompany || "");
-        formData.append("file", formValues.file || "");
-        formData.append("file", formValues.profilePicture || "");
+        formData.append("fullName", formValues.fullName.value || "");
+        formData.append("email", formValues.email.value || "");
+        formData.append("mobile", formValues?.mobile?.value?.toString() || "");
+        formData.append("bio", formValues.bio.value || "");
+        formData.append("skills", formValues.skills.value || "");
+        formData.append("address", formValues.address.value || "");
+        formData.append("totalExp", formValues.totalExp.value || "");
+        formData.append("currentCompany" , formValues.currentCompany.value || "");
+        formData.append("file", formValues.file.value || "");
+        formData.append("file", formValues.profilePicture.value || "");
 
-        // formData.forEach((key,val)=>{
-        //     console.log("k ", key , ": ", val);
+        // formData.forEach((key, val)=>{
+        //    console.log("key ** ", key , val); 
         // });
 
         try {
@@ -175,7 +255,7 @@ const ProfilePage = () => {
     return (
     <>
 
-    <Modal  onHide={handleClose} size="md">
+    <Modal show={notify} onHide={handleClose} size="md">
         <Modal.Body>
             <p className='font-semibold text-justify'>
                 Keep your profile active!. 
@@ -239,7 +319,7 @@ const ProfilePage = () => {
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faBriefcase} className="mr-2 text-yellow-500" />
-                            <span>{incomingData?.profile?.totalExp == "0" ? "Fresher" : incomingData?.profile?.totalExp}</span>
+                            <span>{incomingData?.profile?.totalExp == "0" ? "Fresher" : incomingData?.profile?.totalExp + " Years"}</span>
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faFilePdf} className="mr-2 text-gray-500" />
@@ -284,11 +364,12 @@ const ProfilePage = () => {
                         placeholder = "Tell Us your New Name ?"
                         onChange={handleChange}
                         type="text" 
-                        value={formValues.fullName}
+                        value={formValues.fullName.value}
                         autoComplete='off'
                         name='fullName'
                         className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
                     />
+                    <span className='text-red-500 text-sm'>{formValues.fullName.error}</span>
                 </div>
                 <div>
                     <label className="block">Email <span className='text-red-600 font-bold'> *</span></label>
@@ -296,11 +377,12 @@ const ProfilePage = () => {
                         onChange={handleChange}
                         type="text" 
                         name='email'
-                        value={formValues.email}
+                        value={formValues.email.value}
                         autoComplete='off'
                         placeholder='Tell us your new Email Address'
                         className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
                     />
+                    <span className='text-red-500 text-sm'>{formValues.email.error}</span>
                 </div>
                 <div>
                     <label className="block">Contact Number <span className='text-red-600 font-bold'> *</span></label>
@@ -308,23 +390,25 @@ const ProfilePage = () => {
                         onChange={handleChange}
                         maxLength={10}
                         type="text" 
-                        value={formValues.mobile}
+                        value={formValues.mobile.value}
                         name='mobile'
                         placeholder='+9100000000'
                         autoComplete='off'
                         className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
                     />
+                    <span className='text-red-500 text-sm'>{formValues.mobile.error}</span>
                 </div>
                 <div>
                     <label className="block">Your Bio <span className='text-red-600 font-bold'> *</span></label>
                     <textarea  
                         onChange={handleChange} rows="2" cols="5" 
                         name='bio'
-                        value={formValues.bio}
+                        value={formValues.bio.value}
                         placeholder='A brief bio about yourself'
                         className='w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2'
                     >
                     </textarea>
+                    <span className='text-red-500 text-sm'>{formValues.bio.error}</span>
                 </div>
                 <div>
                     <label className="block">Your Skills <span className='text-red-600 font-bold'> *</span></label>
@@ -334,8 +418,10 @@ const ProfilePage = () => {
                         name='skills'
                         placeholder='Write your skills'
                         autoComplete='off'
-                        value={formValues.skills}
-                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                        value={formValues.skills.value}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                    />
+                    <span className='text-red-500 text-sm'>{formValues.skills.error}</span>
                 </div>
                 <div>
                     <label className="block">Your Current or Permanent Location <span className='text-red-600 font-bold'> *</span></label>
@@ -345,8 +431,10 @@ const ProfilePage = () => {
                         name='address'
                         placeholder='Enter Your Location'
                         autoComplete='off'
-                        value={formValues.address}
-                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                        value={formValues.address.value}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                    />
+                    <span className='text-red-500 text-sm'>{formValues.address.error}</span>
                 </div>
                 <div>
                     <label className="block">Your Current Company 
@@ -359,8 +447,9 @@ const ProfilePage = () => {
                         placeholder='Currently Working Somewhere ?'
                         autoComplete='off'
                         title="Leave empty if you are a fresher or currently not working"
-                        value={formValues.currentCompany}
-                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                        value={formValues.currentCompany.value}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                    />
                 </div>
                 <div>
                     <label className="block">Your Total Work Experience in (years) ? <span className='text-red-600 font-bold'> *</span></label>
@@ -370,8 +459,10 @@ const ProfilePage = () => {
                         name='totalExp'
                         placeholder='Work Experience in (years)'
                         autoComplete='off'
-                        value={formValues.totalExp}
-                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"/>
+                        value={formValues.totalExp.value}
+                        className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
+                    />
+                    <span className='text-red-500 text-sm'>{formValues.totalExp.error}</span>
                 </div>
                 <div className='flex flex-col sm:flex-row justify-between'>   
                     <div>

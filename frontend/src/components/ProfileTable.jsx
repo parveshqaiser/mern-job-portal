@@ -34,7 +34,7 @@ const ProfileTable = ({isLoading}) => {
                             <td className='p-2 border border-gray-400'>{modifyDateFormat(val?.createdAt?.split("T")[0])}</td>
                             <td className='p-2 border border-gray-400'>
                                 <span className={`text-sm px-2 py-1 rounded 
-                                ${val.status == "Accepted"? "bg-green-200 text-green-600" : val.status=="Rejected" ? "text-red-600 bg-red-300" : "bg-gray-200"}  `}>
+                                ${val.status == "Accepted"? "bg-green-200 text-green-600" : val.status=="Rejected" ? "text-red-600 bg-red-300" : "bg-gray-200"}`}>
                                     {val?.status}
                                 </span>
                             </td>
