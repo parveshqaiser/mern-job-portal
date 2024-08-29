@@ -319,7 +319,7 @@ const ProfilePage = () => {
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faBriefcase} className="mr-2 text-yellow-500" />
-                            <span>{incomingData?.profile?.totalExp == "0" ? "Fresher" : incomingData?.profile?.totalExp + " Years"}</span>
+                            <span>{incomingData?.profile?.totalExp  || "Fresher"}</span>
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faFilePdf} className="mr-2 text-gray-500" />
