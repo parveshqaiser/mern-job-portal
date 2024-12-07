@@ -1,17 +1,16 @@
 
 import {jobDetails} from "../Model/jobSchema.js";
 import {nanoid} from "nanoid";
+import jobsValidation from "../Utils/jobsValidation.js";
 
 export const createJobs = async (req,res)=>{
     try {
         let{title, description, requirements, salary, location, openings, jobType, company , workExperience , qualification} = req.body;
 
         let userId = req.id;
+        let hasCreateJob = true;
 
-        if(!title || !description || !salary || !location || !openings || !jobType || !company || !workExperience)
-        {
-            return res.status(400).json({message : "Some Input field missing", success : false})
-        }
+        jobsValidation(req,hasCreateJob);
 
         let generateJobId = await nanoid(8);
 
@@ -37,12 +36,13 @@ export const createJobs = async (req,res)=>{
             return res.status(500).json({ message: "Something went wrong while creating jobs.", success: false });
         }
 
-        return res.status(201).json({message :"Job Created Successfully", success : true , insertJob});
+        res.status(201).json({message :"Job Created Successfully", success : true , insertJob});
+        // res.status(201).json({message : "Testing"})
 
     } catch (error) {
-        console.log("error while creating job ", error);
+        console.log("error while creating job ", error.message);
         return res.status(500).json({
-            message: "An internal server error occurred. Please try again later.",
+            message: `${error.message}`,
             success: false
         });
     }
@@ -213,18 +213,19 @@ export const updateJob = async(req, res)=>{
 
     try {
         let jobId = req.params.id;
+        let hasCreateJob = false;
 
         let {title, isJobExpired, description, salary, location,openings, jobType , qualification,workExperience} = req.body;
 
-        if(!title || !description || !salary || !location || !openings || !jobType || !qualification || !workExperience) 
-        {
-            return res.status(400).json({message : "Some Input field missing", success : false})
-        }
+        // let allowed =["title", "isJobExpired", "description", "salary"];
+
+        // let isAllowed = Object.keys(req.body).every(k=> allowed.includes(k));
+
+        jobsValidation(req, hasCreateJob)
 
         let update = await jobDetails.findOne({jobId});
 
         update.title = title || "",
-        update.isJobExpired = isJobExpired || "",
         update.isJobExpired = isJobExpired || "",
         update.description = description || "",
         update.salary = salary || "",
@@ -236,12 +237,12 @@ export const updateJob = async(req, res)=>{
 
         await update.save();
 
-        return res.status(200).json({message :"Job Updated", success : true});
+        res.status(200).json({message :"Job Updated", success : true});
 
     } catch (error) {
         console.log("error in updating job id", error);
         return res.status(500).json({
-            message: "An internal server error occurred. Please try again later.",
+            message: `${error.message}`,
             success: false
         });
     }

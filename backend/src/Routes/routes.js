@@ -81,7 +81,6 @@ router.patch("/updateCompany/:id", authentication,singleUpload.single("file"), a
     try {
         let cloudUrl ;
         if(req.file !== undefined){
-
             cloudUrl = await cloudUpload(req.file.path, req.file.originalname);
 
             if (!cloudUrl) {
@@ -106,7 +105,7 @@ router.post("/createJobs", authentication, createJobs);
 router.get("/getAllJobs",authentication, getAllJobs);
 router.get("/getJobById/:id", authentication , getJobById);
 router.get("/getAdminJobs", authentication , getAdminJobs);
-router.post("/update/job/:id" , authentication ,updateJob )
+router.patch("/update/job/:id" , authentication ,updateJob);
 
 
 // application
