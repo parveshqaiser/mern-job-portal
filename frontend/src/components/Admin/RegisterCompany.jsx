@@ -43,7 +43,7 @@ const RegisterCompany = () => {
     function handleFileChange(e)
     {
         let file = e.target.files;
-        console.log("file ", file[0]);
+        // console.log("file ", file[0]);
         setFormValues({...formValues, file : file[0]})
     }
 
@@ -51,29 +51,35 @@ const RegisterCompany = () => {
     {
         let {companyName, description, website,location} = formValues;
 
-        if(!companyName || companyName.startsWith(" "))
+        if(!companyName || companyName.trim()=="")
         {
             toast.warning("Company Name Required");
             return;
         }
 
-        if(!description || description.startsWith(" "))
+        if(!description || description.trim()=="")
         {
             toast.warning("Description Required");
             return;
         }
 
-        if(!website || website.startsWith(" "))
+        if(!website || website.trim()== "")
         {
-            toast.warning("Description Required");
+            toast.warning("Website URL Required");
+            return;
+        }
+
+        if(!location || location.trim()== "")
+        {
+            toast.warning("Location Required");
             return;
         }
 
         let formData = new FormData();
-        formData.append("companyName", companyName || "");
-        formData.append("description", description || "");
-        formData.append("location", location || "");
-        formData.append("website", website || "");
+        formData.append("companyName", companyName.trim() || "");
+        formData.append("description", description.trim() || "");
+        formData.append("location", location.trim() || "");
+        formData.append("website", website.trim() || "");
 
         if(formValues.file){
             formData.append("file", formValues.file || "");
@@ -82,7 +88,6 @@ const RegisterCompany = () => {
         formData.forEach((key, val)=>{
             console.log(val ,key);
         })
-
         try {
             setIsDisabled(true)
             let res = await axios.post(`${commonEndPoints}/registerCompany`, formData,{headers :headerInfo});
@@ -99,6 +104,10 @@ const RegisterCompany = () => {
             toast.error(error?.response?.data?.message);
             setIsDisabled(false)
         }
+    }
+
+    function handleRemoveLogo(){
+        setFormValues({...formValues, file : ""})
     }
 
     return (
@@ -162,14 +171,16 @@ const RegisterCompany = () => {
                                 className='w-full sm:w-2/3 px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300 mt-2 sm:mt-0'
                             />
                         </div>
-                        <div className='flex flex-col sm:flex-row items-start sm:items-center mb-2'>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center mb-2">
                             <label className='text-sm font-medium text-gray-700 mb-1 w-1/3'>Enter Logo :</label>
-                            <input 
+                            {!formValues.file.name && <input 
                                 type="file" 
                                 accept="image/png,image/jpeg"
                                 name='file'
                                 onChange={handleFileChange}
-                            />
+                            />}
+                            <span className=''>{formValues.file.name}</span>                            
+                            {formValues.file.name && <span title='Remove Logo' onClick={handleRemoveLogo} className='sm:mx-3 cursor-pointer font-bold'>X</span>}
                         </div>
                         {
                             isDisabled ?  <button disabled={isDisabled} className='w-full bg-blue-500 p-2 text-white rounded-md cursor-not-allowed'>Please Wait...</button> 

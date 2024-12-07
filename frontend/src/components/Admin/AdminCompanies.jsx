@@ -74,7 +74,7 @@ const AdminCompanies = () => {
                             <td>{index + 1}</td>
                             <td className='w-25 h-25'>
                                 <img 
-                                    className='w-20 rounded-md'
+                                    className='w-20 object-cover rounded-md'
                                     src={val.logo || defaultImageLogo} 
                                 />
                             </td>

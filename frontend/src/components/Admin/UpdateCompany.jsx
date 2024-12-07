@@ -95,13 +95,9 @@ const UpdateCompany = () => {
             formData.append("file", formValues.file || "");
         }
         
-        // formData.forEach((value, key) => {
-        //     console.log(`${key}: ${value}`);
-        // });
-
         try {
             setIsDisabled(true);
-            let res = await axios.post(`${commonEndPoints}/updateCompany/${id}`, formData , {headers : headerInfo});
+            let res = await axios.patch(`${commonEndPoints}/updateCompany/${id}`, formData , {headers : headerInfo});
             if(res?.data?.success)
             {
                 toast.success(res.data.message);

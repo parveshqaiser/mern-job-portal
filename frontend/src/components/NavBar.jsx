@@ -49,7 +49,7 @@ const NavBar = () => {
     }
 
     return (
-        <div className="flex justify-between mx-auto max-w-7xl mt-3 ">
+        <div className="flex justify-between mx-auto max-w-6xl mt-3">
             <h2>
                 <span className='text-4xl text-blue-400 font-bold'> Monster</span><span className='text-2xl text-orange-500'>.com</span>
             </h2>
