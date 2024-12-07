@@ -13,7 +13,8 @@ const authentication = async(req,res, next)=>{
         if(getToken && getToken.length)
         {
             isTokenAvailable = getToken?.split(" ")[1] || "";  
-        }else {
+        }
+        else {
             return res.status(500).json({message: "Error In Getting Token", success: false});
         }
 
@@ -25,14 +26,14 @@ const authentication = async(req,res, next)=>{
             return res.status(401).json({message : "Unauthorized User" , success : false});
         }
 
-        let decode = await jwt.verify(isTokenAvailable, process.env.TOKEN_SECRET_KEY); // will give user data
+        let verifyToken = await jwt.verify(isTokenAvailable, process.env.TOKEN_SECRET_KEY); // will give userid
 
-        if (!decode)
+        if (!verifyToken)
         {   
             return res.status(401).json({message : "Invalid Token" , success : false});
         }
 
-        req.id = decode.id; // setting individual id so that i can get whenever i asked req.id
+        req.id = verifyToken.id; // setting individual id so that i can get whenever i asked req.id
         next();
     
 

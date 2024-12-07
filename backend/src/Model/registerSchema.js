@@ -8,6 +8,7 @@ const  userRegistrationSchema= new mongoose.Schema({
     fullName : {
         type : String,
         required : true,
+        trim : true,
     },
     email : {
         type : String,
@@ -16,7 +17,8 @@ const  userRegistrationSchema= new mongoose.Schema({
     },
     password : {
         type : String,
-        required : true
+        required : true,
+        trim : true,
     },
     mobile : {
         type : String,

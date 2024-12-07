@@ -4,29 +4,22 @@ import bcrypt from "bcrypt";
 import {nanoid} from "nanoid";
 import jwt from "jsonwebtoken";
 import cookie from "cookie-parser";
+import validator from "validator";
+import userRegisterValidation from "../Utils/userRegisterValidation.js";
 
 
 export const userRegistration = async(req, res)=>{
-
-    let {fullName, email, password, mobile, role} = req.body;
     
     try {
-        if(!fullName || !email || !password || !mobile || !role)
-        {
-            return res.status(400).json({message : "Some input field missing", success: false})
-        }
-
-        if((!/^[6-9]\d{9}$/.test(mobile)))
-        {
-            return res.status(400).json({message : "Invalid Mobile Number", success: false})
-        }
+        let {fullName, email, password, mobile, role} = req.body;
+        
+        userRegisterValidation(req);
 
         let isEmailExist = await userRegistrationDetails.findOne({email});
         // let exist = await userRegistrationDetails.findOne({$or : [{email}, {fullName}]})
 
         if(isEmailExist){
             return res.status(400).json({message : "Email Already Exist", success: false})
-            // throw new Error("Email Already Exist")
         }
 
         let generateRandomId = nanoid(6);
@@ -47,7 +40,7 @@ export const userRegistration = async(req, res)=>{
             return res.status(400).json({message :"Something went wrong while registering..", success: false})
         }
         
-        return res.status(201).json({message :role + " " + "Account Registered", success : true , data : req.body});
+        return res.status(201).json({message :role + " " + "Account Registered", success : true});
 
     } catch (error) {
         console.log("** error in registering", error);
@@ -68,6 +61,21 @@ export const loginAccount = async (req, res)=>{
             return res.status(400).json({message :"Input Fields Missing", success: false});
         }
 
+        if(!validator.isEmail(email)){
+            res.status(400).json({message: "Email Required", success : false});
+            return;
+        }
+
+        if(!password || (password && password.trim()== "")){
+            res.status(400).json({message: "Password Required" , success : false});
+            return;
+        }
+
+        if(!["Student","Recruiter"].includes(role)){
+            res.status(400).json({message: "Invalid Role" , success : false});
+            return;
+        }
+
         let userData = await userRegistrationDetails.findOne({email});
 
         if(userData == null)
@@ -77,7 +85,7 @@ export const loginAccount = async (req, res)=>{
 
         let matchPassword = await bcrypt.compare(password, userData.password);
 
-        if(matchPassword == false){
+        if(!matchPassword){
             return res.status(400).json({message :"Incorrect Password" , success : false});
         }
 
@@ -88,7 +96,7 @@ export const loginAccount = async (req, res)=>{
 
         let tokenValue = {id : userData?.userId}
 
-        let generateToken = await jwt.sign(tokenValue, process.env.TOKEN_SECRET_KEY,{expiresIn :"1d"});
+        let generateToken = await jwt.sign(tokenValue, process.env.TOKEN_SECRET_KEY,{expiresIn :"12h"});
 
         let user = {
             userId: userData.userId,
@@ -101,7 +109,7 @@ export const loginAccount = async (req, res)=>{
         }
 
         return res.status(201)
-        .cookie("token", generateToken, {maxAge :1*24*60*60*1000 , httpsOnly : true ,sameSite :"strict"})
+        .cookie("token", generateToken, {maxAge :1*12*60*60*1000 , httpsOnly : true ,sameSite :"strict"})
         .json({message :`${user.role} Login Success`, success : true , user})
 
     } catch (error) {

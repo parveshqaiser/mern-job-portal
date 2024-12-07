@@ -60,7 +60,7 @@ router.post("/update/profile",authentication,singleUpload.array("file",2), async
 router.post("/registerCompany",authentication,singleUpload.single("file"), async(req,res)=>{
     try {
         if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded", success: false });
+            return res.status(400).json({ message: "No file Uploaded", success: false });
         }
 
         const uploadResult = await cloudUpload(req.file.path, req.file.originalname);
@@ -77,20 +77,20 @@ router.post("/registerCompany",authentication,singleUpload.single("file"), async
     }
 });
 
-router.post("/updateCompany/:id", authentication,singleUpload.single("file"), async(req, res)=>{
+router.patch("/updateCompany/:id", authentication,singleUpload.single("file"), async(req, res)=>{
     try {
-        if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded", success: false });
+        let cloudUrl ;
+        if(req.file !== undefined){
+
+            cloudUrl = await cloudUpload(req.file.path, req.file.originalname);
+
+            if (!cloudUrl) {
+                return res.status(500).json({ message: 'Failed to upload file to Cloudinary'});
+            }
         }
 
-        const uploadResult = await cloudUpload(req.file.path, req.file.originalname);
-
-        if (!uploadResult) {
-            return res.status(500).json({ message: 'Failed to upload file to Cloudinary' });
-        }
-
-        // update company
-        updateCompanyDetails(req, res, uploadResult);
+        updateCompanyDetails(req, res, cloudUrl?.url || false);
+        
     } catch (error) {
         console.log("Error updating company:", error);
         res.status(500).json({ message: "Internal Server Error", success: false });
@@ -113,6 +113,6 @@ router.post("/update/job/:id" , authentication ,updateJob )
 router.post("/applyJobs/:id", authentication, applyForJobs);
 router.get("/allJobsAppliedByStudent",authentication, getAllJobsAppliedByStudent);
 router.get("/getApplicants/:id", authentication , getApplicants);
-router.post("/updateApplicationStatus/:id", authentication , updateApplicationStatus)
+router.post("/updateApplicationStatus/:id", authentication , updateApplicationStatus);
 
 export default router;

@@ -17,6 +17,7 @@ const removeExtension = (filename) => {
 };
 
 const cloudUpload = async(localFilePath, originalname)=>{
+    
     try {
         if(!localFilePath) return null
 

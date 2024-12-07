@@ -48,31 +48,29 @@ export const registerCompany = async(req,res, uploadResult)=>{
 
 };
 
-export const updateCompanyDetails = async(req,res , uploadResult) => {
+export const updateCompanyDetails = async(req,res , isCloudUrl) => {
 
     try {
         let companyId = req.params.id;
 
         let {companyName ,description, website, location} = req.body;
 
-        let {url, secure_url} = uploadResult;
+        let updateCompany = await companyDetails.findOne({companyId});
 
         if(!companyName)
         {
             return res.status(400).json({message : "Some input field missing", success : false})
         }
 
-        let updateCompany = await companyDetails.findOne({companyId});
-
         updateCompany.companyName = companyName;
         updateCompany.description = description;
         updateCompany.website = website;
         updateCompany.location = location;
-        updateCompany.logo = url || ""
+        updateCompany.logo = isCloudUrl || updateCompany.logo
 
         let data = await updateCompany.save();
         
-        return res.status(201).json({message :"Company Updated", success : true ,data});
+        return res.status(201).json({message :"Company Updated", success : true , data});
 
     } catch (error) {
         console.log("error updating company details ", error );
