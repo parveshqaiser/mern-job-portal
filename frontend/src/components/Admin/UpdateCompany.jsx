@@ -35,18 +35,17 @@ const UpdateCompany = () => {
     async function getCompany()
     {
         try {
-
             let res= await axios.get(`${commonEndPoints}/getCompany/${id}`, {headers : headerInfo});
 
             if(res?.data?.success)
             {
                 let {companyName , description , location , website} = res?.data?.company;
-                // console.log("****** ", companyName , description , location , website);
                 setFormValues({
                     companyName :companyName || "",
                     description : description || "",
                     location : location || "",
-                    website : website || ""
+                    website : website || "",
+                    file : ""
                 });
                 setIsLoading(false);
             }
@@ -72,9 +71,7 @@ const UpdateCompany = () => {
 
     function handleFileChange(e)
     {
-        console.log(e.target.files[0]);
-        setFormValues({...formValues ,file : e.target?.files[0]})
-        
+        setFormValues({...formValues ,file : e.target?.files[0]})        
     }
 
     async function handleSubmit()
@@ -111,6 +108,10 @@ const UpdateCompany = () => {
             toast.error(error?.response?.data?.message);
             setIsDisabled(false);
         }
+    }
+
+    function handleRemoveLogo(){
+        setFormValues({...formValues, file : ""})
     }
 
     return (
@@ -179,12 +180,16 @@ const UpdateCompany = () => {
                                 />
                             </div>
                             <div className='flex flex-col sm:flex-row items-start sm:items-center mb-2'>
+                               
                                 <label className='text-sm font-medium text-gray-700 mb-1 w-1/3'>Enter Logo :</label>
-                                <input 
+                                {!formValues.file && <input 
                                     type="file" 
+                                    accept="image/png,image/jpeg"
                                     name='file'
                                     onChange={handleFileChange}
-                                />
+                                />}
+                                {formValues.file && <span className=''>{formValues.file.name}</span>}                            
+                                {formValues.file && <span title='Remove Logo' onClick={handleRemoveLogo} className='sm:mx-3 cursor-pointer font-bold'>X</span>}
                             </div>
                             {
                                 isDisabled ?  <button disabled={isDisabled} className='w-full bg-blue-500 p-2 text-white rounded-md cursor-not-allowed'>Please Wait...</button> 

@@ -173,14 +173,14 @@ const RegisterCompany = () => {
                         </div>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center mb-2">
                             <label className='text-sm font-medium text-gray-700 mb-1 w-1/3'>Enter Logo :</label>
-                            {!formValues.file.name && <input 
+                            {!formValues.file && <input 
                                 type="file" 
                                 accept="image/png,image/jpeg"
                                 name='file'
                                 onChange={handleFileChange}
                             />}
-                            <span className=''>{formValues.file.name}</span>                            
-                            {formValues.file.name && <span title='Remove Logo' onClick={handleRemoveLogo} className='sm:mx-3 cursor-pointer font-bold'>X</span>}
+                            <span className=''>{formValues?.file?.name || ""}</span>                            
+                            {formValues.file && <span title='Remove Logo' onClick={handleRemoveLogo} className='sm:mx-3 cursor-pointer font-bold'>X</span>}
                         </div>
                         {
                             isDisabled ?  <button disabled={isDisabled} className='w-full bg-blue-500 p-2 text-white rounded-md cursor-not-allowed'>Please Wait...</button> 

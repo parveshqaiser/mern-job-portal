@@ -3,8 +3,8 @@
 // use this whenever there is file upload
 export const getAuthHeaders = () => {
 
-    let userDetails = undefined;
-    let headerInfo = "";
+    let userDetails ;
+    let headerInfo ;
 
     if (typeof window !== "undefined") {
         userDetails = JSON.parse(localStorage.getItem("user"));

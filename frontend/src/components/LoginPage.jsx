@@ -17,8 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyedropper, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const LoginPage = () => {
-
-    // let emailExp = new RegExp("^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z.-]*[a-zA-Z]$");    
+ 
     let emailExp = new RegExp(/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/);
     const [inputValues, setInputValues] = useState({
         email : {
@@ -148,8 +147,7 @@ const LoginPage = () => {
                         navigate("/home");
                     }else {
                         navigate("/admin/companies");
-                    }
-                    
+                    }                    
                 },2500)
             }
         } catch (error) {

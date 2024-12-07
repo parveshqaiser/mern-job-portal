@@ -21,12 +21,12 @@ const useGetAllCompanies = () => {
             getCompanyDetails();
         }      
     },[])
-
+    
     async function getCompanyDetails()
     {
         setIsLoading(true)
         try {
-            let res = await axios.get(`${commonEndPoints}/getAllCompanyDetails`,{headers:headerInfo});
+            let res = await axios.get(`${commonEndPoints}/getAllCompanyDetails`,{headers : headerInfo});
             if(res?.data?.success)
             {
                 setTableData(res.data.getAllData || [])
