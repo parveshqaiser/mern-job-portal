@@ -7,7 +7,6 @@ const userRegisterValidation = (req)=>{
 
     if(!fullName || !email || !password || !mobile || !role)
     {
-        // return res.status(400).json({message : "Some input field missing", success: false});
         throw new Error("Input Field Missing");
     }
 

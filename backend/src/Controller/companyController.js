@@ -2,20 +2,16 @@
 
 import { companyDetails } from "../Model/companySchema.js";
 import {nanoid} from "nanoid";
+import companyValidation from "../Utils/companyValidation.js";
 
 export const registerCompany = async(req,res, uploadResult)=>{
 
     try {
         let {companyName ,description, website, location} = req.body;
 
-        let cId = req.id;
+        companyValidation(req);
 
         let {url} = uploadResult;
-       
-        if(!companyName || !description || !website || !location)
-        {
-            return res.status(400).json({message : "Some input field missing", success: false})
-        }
 
         // find method will find arrays of all companies with same name
         let isCompanyExist = await companyDetails.findOne({companyName}); 
@@ -55,12 +51,9 @@ export const updateCompanyDetails = async(req,res , isCloudUrl) => {
 
         let {companyName ,description, website, location} = req.body;
 
-        let updateCompany = await companyDetails.findOne({companyId});
+        companyValidation(req ,res);
 
-        if(!companyName)
-        {
-            return res.status(400).json({message : "Some input field missing", success : false})
-        }
+        let updateCompany = await companyDetails.findOne({companyId});
 
         updateCompany.companyName = companyName;
         updateCompany.description = description;
@@ -84,7 +77,6 @@ export const updateCompanyDetails = async(req,res , isCloudUrl) => {
 export const getCompanyDetails = async(req, res)=>{
 
     try {
-       
         let getAllData = await companyDetails.find({}).sort({ createdAt: -1 });
 
         return res.status(200).json({
@@ -92,7 +84,6 @@ export const getCompanyDetails = async(req, res)=>{
             success: true,
             message: getAllData.length ? "Company Details fetched successfully" : "No companies available"
         });
-
 
     } catch (error) {
         console.log("error fetching company data", error);

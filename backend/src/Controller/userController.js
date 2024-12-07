@@ -94,9 +94,7 @@ export const loginAccount = async (req, res)=>{
             return res.status(400).json({message :"Current Role Doesn't match", success : false});
         }
 
-        let tokenValue = {id : userData?.userId}
-
-        let generateToken = await jwt.sign(tokenValue, process.env.TOKEN_SECRET_KEY,{expiresIn :"12h"});
+        let generateToken = await jwt.sign({id : userData?.userId}, process.env.TOKEN_SECRET_KEY,{expiresIn :"12h"});
 
         let user = {
             userId: userData.userId,

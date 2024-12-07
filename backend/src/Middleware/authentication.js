@@ -6,27 +6,14 @@ const authentication = async(req,res, next)=>{
 
     try {
 
-        let isTokenAvailable = undefined;
+        let getToken = req?.cookies?.token || req.get("Authorization")?.split(" ")[1];
 
-        let getToken = req.get("Authorization");  // this is one way 
-
-        if(getToken && getToken.length)
-        {
-            isTokenAvailable = getToken?.split(" ")[1] || "";  
-        }
-        else {
-            return res.status(500).json({message: "Error In Getting Token", success: false});
+        if(!getToken){
+            res.status(401).json({message: "Unauthorized user", success : false});
+            return;
         }
 
-       
-        // let isTokenAvailable = req?.cookies?.token; // this is another way
-
-        if (!isTokenAvailable)
-        {   
-            return res.status(401).json({message : "Unauthorized User" , success : false});
-        }
-
-        let verifyToken = await jwt.verify(isTokenAvailable, process.env.TOKEN_SECRET_KEY); // will give userid
+        let verifyToken = jwt.verify(getToken, process.env.TOKEN_SECRET_KEY); // will give userid
 
         if (!verifyToken)
         {   
