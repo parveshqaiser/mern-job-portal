@@ -63,7 +63,6 @@ const UpdateJob = () => {
         else {
             setFormValues({...formValues , [name] : value})
         }
-       
     }
 
     async function handleSubmit()
@@ -73,7 +72,6 @@ const UpdateJob = () => {
             openings : formValues.openings?.toString() || ""
         }
 
-        console.log(data , formValues);
         try {
             setIsDisabled(true);
             let res = await axios.patch(`${commonEndPoints}/update/job/${id}`, data , {headers :headerInfo});
@@ -209,7 +207,6 @@ const UpdateJob = () => {
                             name='jobType'
                             value={formValues.jobType}
                         >
-                            {console.log(formValues.jobType)}
                             <option value="">Select Job Type</option>
                             <option value="Full Time">Full Time</option>
                             <option value="Part Time">Part Time</option>

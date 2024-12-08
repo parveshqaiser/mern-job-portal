@@ -25,6 +25,8 @@ const AdminJobsApplicant = () => {
         getApplicantDetails()
     },[])
 
+    console.log(tableData);
+
     async function getApplicantDetails()
     {
         try {
@@ -49,9 +51,9 @@ const AdminJobsApplicant = () => {
             jobId : tableData[0]?._id?.jobId,
         };
         setVisitedRows([...visitedRows ,id]);
+
         try {
             let res = await axios.post(`${commonEndPoints}/updateApplicationStatus/${id}`, data, {headers : headerInfo});
-            console.log(res);
         } catch (error) {
             console.log("err ", error);
             toast.error(error.response?.data?.message);

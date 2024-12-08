@@ -17,8 +17,6 @@ const CreateJobs = () => {
     useGetAllCompanies();
     let companiesList = useSelector(store => store?.company?.allCompanies);
 
-    // console.log("companiesList", companiesList)
-
     let headersInfo = getAuthHeadersOfApplicationJson();
     let navigate = useNavigate();
 
@@ -206,6 +204,7 @@ const CreateJobs = () => {
                         <label className='block text-sm font-medium text-gray-700'>Enter Requirements</label>
                         <input 
                             type="text" 
+                            title='Please usee comma to separate (,) values'
                             onChange={handleChange}
                             autoComplete='off'
                             name='requirements'

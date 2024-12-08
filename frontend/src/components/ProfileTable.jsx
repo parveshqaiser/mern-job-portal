@@ -7,8 +7,14 @@ const ProfileTable = ({isLoading}) => {
 
     let allJobs = useSelector(store => store?.application?.allApplication);
 
+    const statusClass = {
+        "Accepted": "bg-green-200 text-green-600",
+        "Rejected": "text-red-600 bg-red-300",
+        "Resume Viewed": "bg-yellow-200 text-orange-400",
+    };
+
     return (
-        <div className='overflow-x-auto'>
+        <div className=''>
             <table className='table-auto min-w-full my-4 border-collapse'>
                 <thead>
                     <tr className='bg-gray-300'>
@@ -33,8 +39,7 @@ const ProfileTable = ({isLoading}) => {
                             <td className='p-2 border border-gray-400'>{val?.jobDetails?.title}</td>
                             <td className='p-2 border border-gray-400'>{modifyDateFormat(val?.createdAt?.split("T")[0])}</td>
                             <td className='p-2 border border-gray-400'>
-                                <span className={`text-sm px-2 py-1 rounded 
-                                ${val.status == "Accepted"? "bg-green-200 text-green-600" : val.status=="Rejected" ? "text-red-600 bg-red-300" : "bg-gray-200"}`}>
+                                <span className={`text-sm px-2 py-1 rounded ${statusClass[val.status] || "bg-gray-200"}`}>
                                     {val?.status}
                                 </span>
                             </td>

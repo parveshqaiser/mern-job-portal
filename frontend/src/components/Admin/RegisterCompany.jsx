@@ -85,9 +85,6 @@ const RegisterCompany = () => {
             formData.append("file", formValues.file || "");
         }
 
-        formData.forEach((key, val)=>{
-            console.log(val ,key);
-        })
         try {
             setIsDisabled(true)
             let res = await axios.post(`${commonEndPoints}/registerCompany`, formData,{headers :headerInfo});

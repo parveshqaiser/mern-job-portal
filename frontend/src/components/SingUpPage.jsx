@@ -105,17 +105,23 @@ const SingUpPage = () => {
         setFormValues(newValues);
     }
 
-    function handleFileChange(e)
-    {
-       let val = e.target.files[0];
-       setFormValues({...formValues, file : val.name});
-    }
-
     async function handleSubmit()
     {
         let {fullName, email,mobile,password,role,file} = formValues;
         let phoneExp = new RegExp("^[6-9]\\d{9}$");  
         let emailExp = new RegExp(/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/);
+
+        if(!fullName.value && !email.value && !password.value && !mobile.value)
+        {
+            setFormValues({
+                ...formValues,
+                fullName : {...formValues.fullName , error : "Required"},
+                email : {...formValues.email , error : "Required"},
+                password : {...formValues.password , error : "Required"},
+                mobile : {...formValues.mobile , error : "Required"}
+            });
+            return;
+        }
 
         if(!fullName.value || fullName.value.trim()== ""){
             setFormValues({...formValues, fullName : {...formValues.fullName , error : "Required"}})
@@ -273,29 +279,15 @@ const SingUpPage = () => {
                         </div>
                         <span className='text-red-600 text-sm'>{formValues.role.error}</span>
                     </div>
-                    {/* <div>
-                        <label className="block">Please Upload File</label>
-                        <input 
-                            accept='image/' 
-                            type="file" 
-                            className="w-full px-3 py-2"
-                            onChange={handleFileChange}
-                        />
-                    </div> */}
+
                     <div className="text-center">
-                    {
-                        isDisabled ? 
                         <button 
-                            disabled={isDisabled} 
-                            className="bg-blue-500 w-full text-white px-6 py-2 rounded-md cursor-not-allowed">
-                            Please Wait...
-                        </button> :
-                        <button 
+                            disabled={isDisabled}
                             onClick={handleSubmit}
-                            className="bg-blue-500 hover:bg-purple-600 w-full text-white px-6 py-2 rounded-md"
-                        >Submit</button>
-                    }
-                       
+                            className={`bg-blue-500 hover:bg-purple-600 w-full text-white px-6 py-2 rounded-md ${isDisabled ? "cursor-not-allowed" : ""}`}
+                        >
+                            {isDisabled ? "Please Wait..." : "Submit"}
+                        </button>                       
                     </div>
                     <div className='text-center'> 
                         <span>Already Registered ? </span>

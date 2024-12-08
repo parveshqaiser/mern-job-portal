@@ -12,7 +12,7 @@ const Footer = () => {
             <div className="flex flex-col items-center md:items-start mb-6 md:mb-0 ">
                 <img src={footer} className='w-24 mb-2 rounded-md' alt="Logo" />
                 <div className="flex space-x-4 mt-3">
-                    <a href='https://www.linkedin.com/feed/' target='blank'>
+                    <a href='https://www.linkedin.com' target='blank'>
                         <FontAwesomeIcon title='Linkedin' icon={faLinkedinIn} className="text-blue-500 hover:text-blue-700 w-6 h-6 cursor-pointer" />
                     </a>
                     <a href='https://www.facebook.com/' target='blank'>

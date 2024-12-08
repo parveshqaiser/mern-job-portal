@@ -222,21 +222,13 @@ const LoginPage = () => {
                         <span className="text-red-600 text-sm">{inputValues.role.error}</span>
                     </div>
                     <div className="text-center">
-                        {isDisabled ? (
-                            <button
-                                disabled={isDisabled}
-                                className="bg-blue-500 w-full text-white px-6 py-2 rounded-md cursor-not-allowed"
-                            >
-                                Please Wait...
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleSubmit}
-                                className="bg-blue-500 hover:bg-purple-600 w-full text-white px-6 py-2 rounded-md"
-                            >
-                                Submit
-                            </button>
-                        )}
+                        <button 
+                            disabled={isDisabled}
+                            onClick={handleSubmit}
+                            className={`bg-blue-500 hover:bg-purple-600 w-full text-white px-6 py-2 rounded-md ${isDisabled ? "cursor-not-allowed" : ""}`}
+                        >
+                            {isDisabled ? "Please Wait..." : "Submit"}
+                        </button>
                     </div>
                     <div className="text-center">
                         <span>Haven't Registered Yet?</span>
