@@ -21,9 +21,9 @@ const AdminCompanies = () => {
     const [searchText , setSearchText] = useState("");
 
     useEffect(()=>{
-        if(searchText!=="")
+        if(searchText.trim() !=="" )
         {
-            let filtered = allCompanies.length && allCompanies.filter((val)=> val?.companyName?.toLowerCase().includes(searchText.toLowerCase()));
+            let filtered = allCompanies.length && allCompanies.filter((val)=> val?.companyName?.toLowerCase().includes(searchText.trim().toLowerCase()));
             setFilterData(filtered || []);
         }else {
             setFilterData(allCompanies);

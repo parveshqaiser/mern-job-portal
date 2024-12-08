@@ -28,9 +28,9 @@ const AdminJobs = () => {
     },[])
 
     useEffect(()=>{
-        if(searchText!=="")
+        if(searchText.trim() !=="")
         {
-            let filter = tableData.length && tableData.filter((val)=> val?.title?.toLowerCase().includes(searchText.toLowerCase()) || val?.companyDetails?.companyName?.toLowerCase().includes(searchText.toLowerCase()));
+            let filter = tableData.length && tableData.filter((val)=> val?.title?.toLowerCase().includes(searchText.trim().toLowerCase()) || val?.companyDetails?.companyName?.toLowerCase().includes(searchText.trim().toLowerCase()));
             setFilterData(filter || []);
         }
         else {
@@ -38,6 +38,7 @@ const AdminJobs = () => {
         }
     },[searchText])
 
+    console.log("** ", searchText);
     async function getAdminJobs()
     {
         setIsLoading(true)

@@ -56,7 +56,7 @@ const App = ()=>{
     },
     {
         path : "/admin/companies",
-        element :<ProtectedRoutes><AdminCompanies /></ProtectedRoutes> 
+        element :(<ProtectedRoutes><AdminCompanies /></ProtectedRoutes>)  
     },
     {
         path : "/admin/companies/register",
@@ -68,7 +68,7 @@ const App = ()=>{
     },
     {
         path : "/admin/jobs",
-        element : <ProtectedRoutes> <AdminJobs /> </ProtectedRoutes>
+        element :  <ProtectedRoutes> <AdminJobs /> </ProtectedRoutes>
     },
     {
         path : "/admin/jobs/create",
