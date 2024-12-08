@@ -6,12 +6,12 @@ This is a full-stack web application for job seekers and recruiters, featuring R
 Tech Stack
 ---------
 Frontend : React , TailwindCSS <br/>
-Backend : NodeJs, Express Js, MongoDB atlas
-State management : Redux Toolkit
-Authentication : JWT
-File Storage: Cloudinary (for resume uploads)
-Build Tool : Parcel
+Backend : NodeJs, Express Js, MongoDB <br/>
+State management : Redux Toolkit <br/>
+Authentication : JWT based token  <br/>
+File Storage: Cloudinary (for resume uploads) <br/>
+Build Tool : Parcel <br/>
 
-If You want to run locally , use commands like npm start & it will run in localhost:1234
+If You want to run locally , use commands like npm start & it will run in localhost:1234 <br/>
 
 Deployment URL :
