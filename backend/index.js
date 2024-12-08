@@ -12,7 +12,8 @@ const app = express();
 //     credentials : true,
 // }));
 
-app.use(cors({origin :"https://mern-job-portal-frontend-yk9i.onrender.com",credentials:true}));
+// app.use(cors({origin :"https://mern-job-portal-frontend-yk9i.onrender.com",credentials:true}));
+app.use(cors());
 
 // app.use(express.urlencoded({extended:true}));
 app.use(express.json());
