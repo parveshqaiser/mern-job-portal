@@ -43,7 +43,7 @@ const Browse = () => {
     <>
         <NavBar />
         <AlertMessage />
-        <div className='max-w-7xl mx-auto mt-10 '>
+        <div className='max-w-6xl mx-auto mt-10 '>
             <h1 className='text-xl font-semibold'>{!loading && <span>Search Result [{jobs && jobs.length}]</span>}</h1>
             
             <p className='text-black underline cursor-pointer' onClick={()=> navigate("/home")}> Go Back</p>

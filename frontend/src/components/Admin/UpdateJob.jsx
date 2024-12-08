@@ -37,6 +37,7 @@ const UpdateJob = () => {
     useEffect(()=>{
         setFormValues({
             title : job?.title,
+            isJobExpired : false,
             description : job?.description,
             openings:job?.openings,
             workExperience : job?.workExperience,
@@ -72,9 +73,10 @@ const UpdateJob = () => {
             openings : formValues.openings?.toString() || ""
         }
 
+        console.log(data , formValues);
         try {
             setIsDisabled(true);
-            let res = await axios.post(`${commonEndPoints}/update/job/${id}`, data , {headers :headerInfo});
+            let res = await axios.patch(`${commonEndPoints}/update/job/${id}`, data , {headers :headerInfo});
 
             if(res.data.success)
             {
@@ -207,9 +209,10 @@ const UpdateJob = () => {
                             name='jobType'
                             value={formValues.jobType}
                         >
+                            {console.log(formValues.jobType)}
                             <option value="">Select Job Type</option>
-                            <option value="Full-time">Full-time</option>
-                            <option value="Part-time">Part-time</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part Time">Part Time</option>
                             <option value="Contract">Contract</option>
                             <option value="Remote">Remote</option>
                         </select>

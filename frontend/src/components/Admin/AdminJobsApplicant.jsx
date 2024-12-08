@@ -81,7 +81,7 @@ const AdminJobsApplicant = () => {
         <>
         <NavBar />
         <AlertMessage />
-        <div className='max-w-7xl mx-auto mt-5 p-2 rounded-md'>
+        <div className='max-w-6xl mx-auto mt-5 p-2 rounded-md'>
             <div>
                 <button onClick={() => navigate("/admin/jobs")} className='bg-[#2d2d2d] text-white p-2 rounded-md hover:bg-indigo-500 focus:outline-none'>
                     Go Back

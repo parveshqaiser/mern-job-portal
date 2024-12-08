@@ -158,12 +158,13 @@ const CreateJobs = () => {
                     <div>
                         <label className='block text-sm font-medium text-gray-700'>Enter Salary Range &#8377; (LPA)</label>
                         <input 
+                            title='Ex : 5-6, 7-10, 15-20'
                             type="text" 
                             onChange={handleChange}
                             autoComplete='off'
                             name='salary'
                             className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-300"
-                        />
+                        />                        
                     </div>
                     <div>
                         <label className='block text-sm font-medium text-gray-700'>Enter Location</label>
@@ -195,8 +196,8 @@ const CreateJobs = () => {
                             name='jobType'
                         >
                             <option value="">Select Job Type</option>
-                            <option value="Full-time">Full-time</option>
-                            <option value="Part-time">Part-time</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part Time">Part Time</option>
                             <option value="Contract">Contract</option>
                             <option value="Remote">Remote</option>
                         </select>

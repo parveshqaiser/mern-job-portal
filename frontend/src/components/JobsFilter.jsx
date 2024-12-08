@@ -48,7 +48,7 @@ const JobsFilter = () => {
     return (
     <>
     <button onClick={()=> setInputValue("")} className='bg-orange-300 py-1 px-2 rounded-lg'>Reset All Filters</button>
-    <div className="space-y-4 p-4 bg-white rounded-lg shadow-md">
+    <div className="space-y-2 p-2 bg-white rounded-lg shadow-md">
     {
         list.map(val => (
             <div key={val.number}>

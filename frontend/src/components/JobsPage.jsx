@@ -52,9 +52,9 @@ const JobsPage = () => {
         <>
         <NavBar />
         <AlertMessage />
-        <div className=' max-w-7xl mx-auto mt-5'>
+        <div className='max-w-6xl mx-auto mt-5'>
             <div className='flex flex-col md:flex-row'>
-                <div className='md:w-1/5 h-screen overflow-hidden overflow-y-auto'>
+                <div className='md:w-1/5 h-screen overflow-auto'>
                     <h1 className='font-bold my-1'>Filter Options</h1>
                     <JobsFilter />
                 </div>

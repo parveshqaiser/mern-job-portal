@@ -113,7 +113,6 @@ const SingUpPage = () => {
 
     async function handleSubmit()
     {
-        console.log(formValues);
         let {fullName, email,mobile,password,role,file} = formValues;
         let phoneExp = new RegExp("^[6-9]\\d{9}$");  
         let emailExp = new RegExp(/^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/);
@@ -160,11 +159,10 @@ const SingUpPage = () => {
         }
 
         let data = {
-            fullName : fullName.value,
-            email : email.value,
+            fullName : fullName.value.trim(),
+            email : email.value.trim(),
             mobile : mobile.value.toString(),
-            fullName : fullName.value,
-            password : password.value,
+            password : password.value.trim(),
             role : role.value,
         }
 
