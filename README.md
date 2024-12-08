@@ -5,7 +5,7 @@ This is a full-stack web application for job seekers and recruiters, featuring R
 
 Tech Stack
 ---------
-Frontend : React , TailwindCSS
+Frontend : React , TailwindCSS <br/>
 Backend : NodeJs, Express Js, MongoDB atlas
 State management : Redux Toolkit
 Authentication : JWT
