@@ -14,4 +14,4 @@ Build Tool : Parcel <br/>
 
 If You want to run locally , use commands like npm start & it will run in localhost:1234 <br/>
 
-Deployment URL :
+Deployment URL : https://mern-job-portal-frontend-yk9i.onrender.com
