@@ -3,7 +3,6 @@ import { userRegistrationDetails } from "../Model/registerSchema.js";
 import bcrypt from "bcrypt";
 import {nanoid} from "nanoid";
 import jwt from "jsonwebtoken";
-import cookie from "cookie-parser";
 import validator from "validator";
 import userRegisterValidation from "../Utils/userRegisterValidation.js";
 
@@ -45,7 +44,7 @@ export const userRegistration = async(req, res)=>{
     } catch (error) {
         console.log("** error in registering", error);
         return res.status(500).json({
-            message: "An internal server error occurred. Please try again later.",
+            message: `${error.message}`,
             success: false
         });
     }
