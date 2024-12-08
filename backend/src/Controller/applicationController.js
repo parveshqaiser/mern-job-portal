@@ -21,8 +21,7 @@ export const applyForJobs = async(req, res) => {
 
         let findJob = await jobDetails.findOne({jobId});
 
-
-        if(findJob == null){
+        if(!findJob){
             return res.status(400).json({message : "Job Not found ", success : false});
         }
 
@@ -35,7 +34,7 @@ export const applyForJobs = async(req, res) => {
         // findJob.application.push(userId)
         await findJob.save();
 
-        return res.status(201).json({message :"Job Applied Successfully", success : true});
+        res.status(201).json({message :"Job Applied Successfully", success : true});
 
     } catch (error) {
         console.log("error applying for jobs ", error);
@@ -164,14 +163,13 @@ export const getApplicants = async (req,res)=>{
             },
         ];
         
-
         let findApplicants = await jobDetails.aggregate(query);
 
         if(!findApplicants){
             return res.status(404) .json({message : "No Applicants found for this job",success : false});
         }
 
-        return res.status(200).json({findApplicants, success:true});
+        res.status(200).json({findApplicants, success:true});
 
     } catch (error) {
         console.log("error in getting all applicants details ", error);
@@ -187,12 +185,13 @@ export const getApplicants = async (req,res)=>{
 export const updateApplicationStatus = async(req,res)=>{
     try {
         let status = req.body.status;
-        let jobId = req.body.jobId; // from front end
-        let userId = req.params.id; // as params user id
+        let jobId = req.body.jobId; // jobId 
+        let userId = req.params.id; // user who applied for job
 
-        if(!status)
-        {
-            return res.status(400).json({message : "Status Required", success : false});
+        let allowedStatus =["Resume Viewed","Accepted","Rejected"];
+
+        if(!allowedStatus.includes(status)){
+            return res.status(400).json({message : "Invalid Status"})
         }
 
         let findApplication = await applicationDetails.findOne({job : jobId , applicant : userId}); // find that job with the help of job id and user id
@@ -203,7 +202,8 @@ export const updateApplicationStatus = async(req,res)=>{
 
         findApplication.status = status;
         await findApplication.save();
-        return res.status(200).json({message : "Application Updated", success : true})
+
+        res.status(200).json({message : "Application Updated", success : true})
 
     } catch (error) {
         console.log("error updating app status",error);
