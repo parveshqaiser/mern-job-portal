@@ -5,6 +5,7 @@ import {nanoid} from "nanoid";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import userRegisterValidation from "../Utils/userRegisterValidation.js";
+import userUpdateValidation from "../Utils/userUpdateValidation.js";
 
 
 export const userRegistration = async(req, res)=>{
@@ -135,14 +136,11 @@ export const updateProfile = async(req, res , uploadResult)=>{
 
     try {
 
-        let {fullName, email, mobile,bio, skills, address, totalExp, currentCompany} = req.body;
+        let {fullName, mobile,bio, skills, address, totalExp, currentCompany} = req.body;
+
+        userUpdateValidation(req);
 
         let {pdfUrl , imageUrl, pdfName} = uploadResult;
-        
-        if(!fullName || !email || !mobile)
-        {
-            return res.status(400).json({message : "Some input field missing", success: false})
-        }
 
         let skillsList ;
         if(skills && skills.length){
@@ -159,14 +157,13 @@ export const updateProfile = async(req, res , uploadResult)=>{
 
         user.fullName = fullName;
         user.mobile = mobile;
-        user.email = email;
         user.profile.bio = bio;
         user.profile.address = address || "";
         user.profile.totalExp = totalExp || "";
         user.profile.skills = skillsList;   
-        user.profile.resumeName = pdfName || "";
-        user.profile.resumeLink = pdfUrl || "";
-        user.profile.profilePicture = imageUrl || "",
+        user.profile.resumeName = pdfName || user.profile.resumeName;
+        user.profile.resumeLink = pdfUrl || user.profile.resumeLink;
+        user.profile.profilePicture = imageUrl || user.profile.profilePicture,
         user.profile.currentCompany = currentCompany || "";
 
        await user.save();
@@ -185,7 +182,7 @@ export const updateProfile = async(req, res , uploadResult)=>{
     } catch (error) {
         console.log("error in updating profile" ,error);
         return res.status(500).json({
-            message: "An internal server error occurred. Please try again later.",
+            message: `${error?.message}`,
             success: false
         });
     }
