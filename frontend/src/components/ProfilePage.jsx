@@ -74,7 +74,6 @@ const ProfilePage = () => {
     {
         setFormValues({
             fullName : {value : incomingData.fullName || "", error :""},
-            profilePicture : {value : incomingData?.profile?.profilePicture || "" ,error :""},
             email : {value : incomingData.email || "" , error :""},
             mobile : {value : incomingData.mobile || "" , error :""},
             skills : {value : incomingData?.profile?.skills?.map(val=> val) || "", error :""},
@@ -82,7 +81,8 @@ const ProfilePage = () => {
             address : {value : incomingData?.profile?.address || "" , error :""},
             totalExp : {value : incomingData?.profile?.totalExp || "" , error :""},
             currentCompany : {value : incomingData?.profile?.currentCompany || "", error :""},
-            file : {value : "" ,error :""},
+            file : "",
+            profilePicture : ""
         });
         setShow(true);
     }
@@ -92,14 +92,7 @@ const ProfilePage = () => {
         let val = e.target.files[0];
         let name = e.target.name;
 
-        let newValues = {...formValues};
-
-        newValues[name] = {
-            value : val,
-            error : !val ? "Please Upload File" :"",    
-        }
-
-        setFormValues(newValues);
+        setFormValues({...formValues, [name] : val});
     }
 
     function handleChange(e)
@@ -206,16 +199,16 @@ const ProfilePage = () => {
             return;
         }
 
-        if(formValues.file.value=="")
-        {
-            toast.warning("Please Upload Your Resume");
-            return;
-        }
-        if(formValues.profilePicture.value=="")
-        {
-            toast.warning("Please Update Profile Pic");
-            return;
-        }   
+        // if(formValues.file.value=="")
+        // {
+        //     toast.warning("Please Upload Your Resume");
+        //     return;
+        // }
+        // if(formValues.profilePicture.value=="")
+        // {
+        //     toast.warning("Please Update Profile Pic");
+        //     return;
+        // }   
 
         formData.append("fullName", formValues.fullName.value || "");
         formData.append("email", formValues.email.value || "");
@@ -225,8 +218,8 @@ const ProfilePage = () => {
         formData.append("address", formValues.address.value || "");
         formData.append("totalExp", formValues.totalExp.value || "");
         formData.append("currentCompany" , formValues.currentCompany.value || "");
-        formData.append("file", formValues.file.value || "");
-        formData.append("file", formValues.profilePicture.value || "");
+        formData.append("file", formValues.file || "");
+        formData.append("file", formValues.profilePicture || "");
 
         // formData.forEach((key, val)=>{
         //    console.log("key ** ", key , val); 
@@ -234,7 +227,7 @@ const ProfilePage = () => {
 
         try {
             setIsDisabled(true);
-            let res = await axios.post(`${commonEndPoints}/update/profile`, formData, {headers : headerInfo});
+            let res = await axios.patch(`${commonEndPoints}/update/profile`, formData, {headers : headerInfo});
 
             if(res.data.success)
             {
@@ -252,10 +245,20 @@ const ProfilePage = () => {
         }
     }
 
+    function handleRemoveFile(value)
+    {
+        if(value == "resume"){
+            setFormValues({...formValues, file : ""})
+        }
+
+        if(value == "profile"){
+            setFormValues({...formValues, profilePicture : ""})
+        }
+    }
+
     return (
     <>
-
-    <Modal show={notify} onHide={handleClose} size="md">
+    <Modal  onHide={handleClose} size="md">
         <Modal.Body>
             <p className='font-semibold text-justify'>
                 Keep your profile active!. 
@@ -319,7 +322,7 @@ const ProfilePage = () => {
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faBriefcase} className="mr-2 text-yellow-500" />
-                            <span>{incomingData?.profile?.totalExp  || "Fresher"}</span>
+                            <span>{incomingData?.profile?.totalExp + " Years"  || "Fresher"}</span>
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faFilePdf} className="mr-2 text-gray-500" />
@@ -329,7 +332,7 @@ const ProfilePage = () => {
                                 href={incomingData && (incomingData?.profile?.resumeLink)} 
                                 className="hover:underline hover:text-blue-600 cursor-pointer"
                             >
-                                {incomingData?.profile?.resumeName || "Please Upload Resume"}
+                                <span className='text-red-500'>{incomingData?.profile?.resumeName || "Please Upload Resume"}</span>
                             </a>
                         </div>
                         <div className="">
@@ -374,6 +377,7 @@ const ProfilePage = () => {
                 <div>
                     <label className="block">Email <span className='text-red-600 font-bold'> *</span></label>
                     <input 
+                        disabled
                         onChange={handleChange}
                         type="text" 
                         name='email'
@@ -382,7 +386,7 @@ const ProfilePage = () => {
                         placeholder='Tell us your new Email Address'
                         className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
                     />
-                    <span className='text-red-500 text-sm'>{formValues.email.error}</span>
+                    {/* <span className='text-red-500 text-sm'>{formValues.email.error}</span> */}
                 </div>
                 <div>
                     <label className="block">Contact Number <span className='text-red-600 font-bold'> *</span></label>
@@ -416,7 +420,8 @@ const ProfilePage = () => {
                         onChange={handleChange}
                         type="text" 
                         name='skills'
-                        placeholder='Write your skills'
+                        title='Use Comma (,) to separate values '
+                        placeholder='Write your skills. Separate by giving comma(,)'
                         autoComplete='off'
                         value={formValues.skills.value}
                         className="w-full px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-sky-500 focus:ring-2"
@@ -464,44 +469,41 @@ const ProfilePage = () => {
                     />
                     <span className='text-red-500 text-sm'>{formValues.totalExp.error}</span>
                 </div>
-                <div className='flex flex-col sm:flex-row justify-between'>   
+                <div className='flex flex-col sm:flex-row justify-around'>   
                     <div>
-                        <label className="">Please Upload Updated Resume <span className='text-red-600 font-bold'> *</span></label>
-                        <input 
+                        {!formValues?.file?.name  &&<label>Please Upload Updated Resume</label>}
+                        {!formValues.file &&<input 
                             accept="application/pdf"
                             type="file" 
                             name='file'
                             className="w-full px-2 py-2"
                             onChange={handleFileChange}
-                        />
+                        />}      
+                        <span className=''>{formValues?.file?.name || ""}</span>           
+                        {formValues.file && <span title='Remove File' onClick={()=>handleRemoveFile("resume")} className='sm:mx-3 cursor-pointer font-bold'>X</span>}                 
                     </div>                     
                     <div>
-                        <label className="">Please Upload Profile Pic <span className='text-red-600 font-bold'> *</span></label>
-                        <input 
+                    {!formValues?.profilePicture?.name  &&<label>Please Upload Profile Pic</label>}
+                        {!formValues.profilePicture &&<input 
                             accept="image/png,image/jpeg"
                             type="file" 
                             name='profilePicture'
                             className="w-full px-2 py-2"
                             onChange={handleFileChange}
-                        />
+                        />}
+                        <span className=''>{formValues?.profilePicture?.name || ""}</span>           
+                        {formValues.profilePicture && <span title='Remove Profile Pic' onClick={()=>handleRemoveFile("profile")} className='sm:mx-3 cursor-pointer font-bold'>X</span>}
                     </div>                       
                 </div>
                 <div className="text-center">
                 {
-                    isDisabled ? 
                     <button 
                         disabled={isDisabled}
-                        className="bg-blue-500 cursor-not-allowed w-full text-white px-6 py-2 rounded-md"
+                        onClick={handleSubmit}
+                        className={`bg-blue-500 w-full text-white px-4 py-2 rounded-md ${isDisabled? "cursor-not-allowed" : ""}`}
                     >
-                        Updating Your Profile
-                    </button> :
-                        <button 
-                            disabled={isDisabled}
-                            onClick={handleSubmit}
-                            className="bg-blue-500  w-full text-white px-6 py-2 rounded-md"
-                    >
-                        Update
-                    </button> 
+                        {isDisabled ? "Updating Your Profile" : "Update"}
+                    </button>
                 }
                 </div>
             </form>

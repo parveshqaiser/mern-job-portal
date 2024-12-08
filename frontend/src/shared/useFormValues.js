@@ -36,14 +36,8 @@ const useFormValues = ()=>{
             value :"",
             error : "",
         },
-        file : {
-            value :"",
-            error : "",
-        }, 
-        profilePicture : {
-            value :"",
-            error : "",
-        },
+        file : "",
+        profilePicture : "",
     });
 
     return [formValues, setFormValues]
