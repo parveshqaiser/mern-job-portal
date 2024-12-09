@@ -40,7 +40,7 @@ export const userRegistration = async(req, res)=>{
             return res.status(400).json({message :"Something went wrong while registering..", success: false})
         }
         
-        return res.status(201).json({message :role + " " + "Account Registered", success : true});
+        res.status(201).json({message :role + " " + "Account Registered", success : true});
 
     } catch (error) {
         console.log("** error in registering", error);

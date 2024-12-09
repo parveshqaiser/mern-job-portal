@@ -47,7 +47,8 @@ const  userRegistrationSchema= new mongoose.Schema({
             type : String
         },
         totalExp : {
-            type : String
+            type : String,
+            default : "", // once you give this value, it will come in DB
         },
         resumeName : {
             type : String
