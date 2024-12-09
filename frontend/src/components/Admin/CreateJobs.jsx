@@ -47,9 +47,9 @@ const CreateJobs = () => {
             setFormValues({...formValues, [name] : value})
         }
         
-        if(name == "openings")
+        if(name == "openings" || name == "workExperience")
         {
-            setFormValues({...formValues , openings : parseInt(value) || ""});
+            setFormValues({...formValues , [name] : parseInt(value) || ""});
         }
         else {
             setFormValues({...formValues , [name] : value})
@@ -61,7 +61,8 @@ const CreateJobs = () => {
     {
         let data = {
             ...formValues,
-            openings : formValues.openings?.toString() || ""
+            openings : formValues.openings?.toString() || "",
+            workExperience : formValues.workExperience?.toString() || ""
         }
 
         try {
