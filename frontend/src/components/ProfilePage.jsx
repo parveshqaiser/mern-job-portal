@@ -57,7 +57,6 @@ const ProfilePage = () => {
         setLoading(true)
         try {
             let res = await axios.get(`${commonEndPoints}/getUserData`, {headers : headerInfo});
-            // console.log("getData ", res.data.currentUser)
             if(res?.data?.currentUser)
             {
                 setIncomingData(res?.data?.currentUser) 
@@ -240,7 +239,7 @@ const ProfilePage = () => {
             }
         } catch (error) {
             console.log("err", error);
-            toast.error(error?.response?.data?.message);
+            toast.error(error?.response?.data?.message || error?.message);
             setIsDisabled(false);
         }
     }
@@ -258,7 +257,7 @@ const ProfilePage = () => {
 
     return (
     <>
-    <Modal  onHide={handleClose} size="md">
+    <Modal show={notify}  onHide={handleClose} size="md">
         <Modal.Body>
             <p className='font-semibold text-justify'>
                 Keep your profile active!. 
@@ -322,7 +321,7 @@ const ProfilePage = () => {
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faBriefcase} className="mr-2 text-yellow-500" />
-                            <span>{incomingData?.profile?.totalExp + " Years"  || "Fresher"}</span>
+                            <span>{(incomingData?.profile?.totalExp === "0" || incomingData?.profile?.totalExp == "" ? "Fresher" : incomingData?.profile?.totalExp + " Years")}</span>
                         </div>
                         <div className="">
                             <FontAwesomeIcon icon={faFilePdf} className="mr-2 text-gray-500" />

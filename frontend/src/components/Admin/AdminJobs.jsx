@@ -38,7 +38,6 @@ const AdminJobs = () => {
         }
     },[searchText])
 
-    console.log("** ", searchText);
     async function getAdminJobs()
     {
         setIsLoading(true)
