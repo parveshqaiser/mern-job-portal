@@ -11,6 +11,8 @@ import { commonEndPoints } from '../../utils/api';
 import { toast } from 'react-toastify';
 import { AlertMessage } from '../../utils/toastify';
 import useGetAllCompanies from '../../shared/useGetALlCompanies';
+import { Tooltip } from 'react-tooltip';
+import "react-tooltip/dist/react-tooltip.css";
 
 const CreateJobs = () => {
 
@@ -41,13 +43,15 @@ const CreateJobs = () => {
         let sanitize = removeDomElementsFromInput(value);
         value = sanitize;
 
-        if(name == "title" || name =="location")
+        console.log("888 ", name , value);
+
+        if(name == "title" || name =="location" || name == "qualification")
         {
             value = value.charAt(0).toUpperCase() + value.slice(1);
             setFormValues({...formValues, [name] : value})
         }
         
-        if(name == "openings" || name == "workExperience")
+        if(name == "openings")
         {
             setFormValues({...formValues , [name] : parseInt(value) || ""});
         }
@@ -134,9 +138,11 @@ const CreateJobs = () => {
                         />
                     </div>
                     <div className=''>
-                        <label className='block text-sm font-medium text-gray-700 '>Enter Work Experience (years)</label>
-                        <input 
+                        <label id='work' className='block text-sm font-medium text-gray-700 '>Enter Work Experience (years)</label>
+                        <Tooltip anchorId='work' place='top' content='Ex: 2-5 or 1-2 or 3-5' />
+                        <input
                             type="text" 
+                            // value={formValues.workExperience}
                             onChange={handleChange}
                             autoComplete='off'
                             name='workExperience'
@@ -180,6 +186,7 @@ const CreateJobs = () => {
                         <label className='block text-sm font-medium text-gray-700'>Enter Qualification</label>
                         <textarea 
                             rows={2}
+                            value={formValues.qualification}
                             onChange={handleChange}
                             autoComplete='off'
                             name='qualification'
@@ -202,10 +209,11 @@ const CreateJobs = () => {
                         </select>
                     </div>
                     <div>
-                        <label className='block text-sm font-medium text-gray-700'>Enter Requirements</label>
+                        <label id='require' className='block text-sm font-medium text-gray-700'>Enter Requirements</label>
+                        <Tooltip anchorId='require' place='top' content='Please usee comma to separate (,) values' />
                         <input 
                             type="text" 
-                            title='Please usee comma to separate (,) values'
+                            // title='Please usee comma to separate (,) values'
                             onChange={handleChange}
                             autoComplete='off'
                             name='requirements'
