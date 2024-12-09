@@ -49,7 +49,7 @@ const RegisterCompany = () => {
 
     async function handleSubmit()
     {
-        let {companyName, description, website,location} = formValues;
+        let {companyName, description, website,location, file} = formValues;
 
         if(!companyName || companyName.trim()=="")
         {
@@ -72,6 +72,11 @@ const RegisterCompany = () => {
         if(!location || location.trim()== "")
         {
             toast.warning("Location Required");
+            return;
+        }
+
+        if(!file){
+            toast.warning("Please Upload Logo");
             return;
         }
 
