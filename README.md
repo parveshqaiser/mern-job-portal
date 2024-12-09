@@ -1,4 +1,4 @@
-Abput the Project 
+About the Project 
 ------------------
 
 This is a full-stack web application for job seekers and recruiters, featuring Role-Based Access Control (RBAC) to manage user roles effectively. Job seekers can search and apply for jobs, while recruiters can post and manage job listings. Administrators have access to platform-wide controls. The app provides intuitive UIs for different user roles, along with functionalities such as job filtering, applicant tracking, and user authentication.
